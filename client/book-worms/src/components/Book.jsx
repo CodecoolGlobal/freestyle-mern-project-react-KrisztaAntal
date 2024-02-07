@@ -17,9 +17,9 @@ function Book(props) {
     return (
         <div className="list-item-root">
             <img src={book.BookImage} alt="Book Index Image" />
-            <h6>{book.Title}</h6>
-            <h6>Written by: {book.Author}</h6>
-            <h6>{book.Genre}</h6>                   {/*Might need to change to .map, in case it becomaes an array*/}
+            <p>{book.Title}</p>
+            <p>Written by: {book.Author}</p>
+            <p>{book.Genre}</p>                   {/*Might need to change to .map, in case it becomaes an array*/}
             {props.bookItemtype === "store" ? (
                 <>
                     <button>Add to collection</button>

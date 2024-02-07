@@ -1,3 +1,10 @@
+button{
+  padding : 10px 20px 10px 20px;
+  margin: 10px;
+  border : 1px white dashed;
+  background-color: #414344aa;
+}
+
 .parent {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -24,7 +31,7 @@
 }
 
 .header-item{
-  font-size: 40px;
+  font-size: 10px;
 }
 .header-title{
   font-size: 40px;
