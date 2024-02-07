@@ -5,7 +5,7 @@ import "dotenv/config";
 
 mongoose.connect(process.env.MONGO_DB_URL);
 const app = express();
-const PORT = 5000;
+const PORT = 8080;
 
 app.use(express.json());
 
