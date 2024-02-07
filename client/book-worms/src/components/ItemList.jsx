@@ -72,7 +72,7 @@ const dummyList = [
     },
 ];
 
-function ItemList(props) {
+function ItemList(/*props*/) {
 
     //const bookItemtype = props.itemType;
     const bookItemtype = "store";
@@ -85,4 +85,5 @@ function ItemList(props) {
             )}
         </div>)
 }
+// 
 export default ItemList;
