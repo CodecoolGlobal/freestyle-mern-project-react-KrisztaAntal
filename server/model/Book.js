@@ -8,6 +8,6 @@ const bookSchema = new Schema({
     Genre: String,
     BookImage: String,
     DeatailURL: String,
-    Reviews: Array, 
+    Reviews: Array,
 });
 export default model('Book', bookSchema);
