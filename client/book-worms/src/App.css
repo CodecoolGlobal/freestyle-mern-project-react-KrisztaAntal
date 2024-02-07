@@ -44,6 +44,7 @@
 }
 
 .item-list-root {
+  padding: 15px;
   border: 1px white solid;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -52,7 +53,7 @@
 }
 
 .list-item-root {
-  border: 1px white solid;
+  border: 2px white solid;
 }
 
 .logo {
