@@ -3,14 +3,15 @@ import User from "./model/User.js";
 import Book from "./model/Book.js";
 import "dotenv/config";
 
+const userName = "admin"
 //createTestUser()
-//getUserAndBooks()
+getUserAndBooks()
 
 
 async function getUserAndBooks() {
     await mongoose.connect(process.env.MONGO_DB_URL);
     const user = await User
-        .findOne({name: "admin"})
+        .findOne({name: userName})
         .populate("usersBooks.book")
         .exec();
     console.log(user.usersBooks[0]);
