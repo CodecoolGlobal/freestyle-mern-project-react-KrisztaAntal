@@ -3,24 +3,13 @@ import EditDetailedBook from "./EditDetailedBook";
 
 function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
     const [bookInfo, setBookInfo] = useState(book);
-    //const [bookInfo2, setBookInfo2] = useState(null);
     const [isAddReviewPushed, setIsAddReviewPushed] = useState(false);
     const [review, setReview] = useState('');
     const [rate, setRate] = useState(0);
-    //const isAdmin = true;
-    //const isLoggedIn = false;
     const bookId = book.bookId
-    //    const detailsLink = "https://www.googleapis.com/books/v1/volumes/zvHImh5II3cC"
 
-    /*     async function fetchBookDetails() {
-            const res = await fetch(`${detailsLink}`);
-            const bookDetails2 = await res.json();
-            setBookInfo2(bookDetails2.volumeInfo);
-            //console.log(bookDetails2.volumeInfo);
-        } */
 
     useEffect(() => {
-        //fetchBookDetails();
         fetchBookInfo();
     }, [])
 
@@ -28,10 +17,10 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
         const res = await fetch(`/api/book/${bookId}`);
         const bookDetails = await res.json();
         setBookInfo(bookDetails)
-        //console.log(bookDetails);
     }
 
-    async function handleAddReview() {
+    async function handleAddReview(e) {
+        e.preventDefault();
         const res = await fetch(`/api/book/${bookId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -46,8 +35,8 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
             ? <EditDetailedBook onBack={onBack} bookinfo={book}></EditDetailedBook>
             : <>
                 <div>
-                    <button onClick={()=>{onBack()}}>Back</button>
-                    </div>
+                    <button onClick={() => { onBack() }}>Back</button>
+                </div>
                 <div>
                     <img src={bookInfo.bookImage}></img>
                     <h1>{bookInfo.title}</h1>
