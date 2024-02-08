@@ -12,6 +12,6 @@ const bookSchema = new Schema({
     description: String,
     bookImage: String,
     deatailURL: String,
-    reviews: Array,
+    reviews: [{rate:Number, reviewText:String}],
 });
 export default model('Book', bookSchema);

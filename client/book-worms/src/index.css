@@ -67,3 +67,27 @@ button:focus-visible {
   }
 }
 */
+.bookDetailTitle{
+  font-size: 2em;
+}
+button{color: lightgrey;}
+button:hover {
+  border-color: #646cff;
+}
+
+.bookDetail{
+  margin-top: 0;
+}
+.bookDetailP{
+  margin: 0;
+}
+
+.reviewDiv {
+  margin:2em
+}
+
+.reviewDiv p{
+  margin:0
+}
+
+
