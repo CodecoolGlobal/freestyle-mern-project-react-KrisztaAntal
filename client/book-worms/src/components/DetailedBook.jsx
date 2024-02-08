@@ -31,7 +31,8 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
         //console.log(bookDetails);
     }
 
-    async function handleAddReview() {
+    async function handleAddReview(e) {
+        e.preventDefault();
         const res = await fetch(`/api/book/${bookId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -46,8 +47,8 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
             ? <EditDetailedBook onBack={onBack} bookinfo={book}></EditDetailedBook>
             : <>
                 <div>
-                    <button onClick={()=>{onBack()}}>Back</button>
-                    </div>
+                    <button onClick={() => { onBack() }}>Back</button>
+                </div>
                 <div>
                     <img src={bookInfo.bookImage}></img>
                     <h1>{bookInfo.title}</h1>

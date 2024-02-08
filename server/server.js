@@ -20,13 +20,13 @@ app.use(express.json());
 
 app.get('/api/book/:id', async (req, res) => {
     const idToFind = req.params.id
-    const book = await Book.findOne({ BookId: idToFind })
+    const book = await Book.findOne({ bookId: idToFind })
     res.send(book)
 });
 
 app.post('/api/book/:id', async (req, res) => {
     const review = req.body
-    const update = await Book.updateOne({ BookId: req.params.id }, { $push: { Reviews: review } })
+    const update = await Book.updateOne({ bookId: req.params.id }, { $push: { reviews: review } })
     console.log(review);
     console.log(update);
     res.status(200)
