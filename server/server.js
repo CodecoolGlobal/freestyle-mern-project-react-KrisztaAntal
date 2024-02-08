@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
-//import Book from "./model/Book";
+import Book from "./model/Book.js";
 
 mongoose.connect(process.env.MONGO_DB_URL);
 const app = express();
@@ -9,11 +9,23 @@ const PORT = 8080;
 
 app.use(express.json());
 
-app.get('/api/book/:id', (req, res)=>{
+app.get('/api/book/:id', async (req, res) => {
     const idToFind = req.params.id
-    console.log(idToFind);
-    Book
-    res.send(JSON.stringify('kacsa'))
+    const book = await Book.findOne({ BookId: idToFind })
+    //console.log(book);
+    res.send(book)
+});
+
+app.post('/api/book/:id', async (req, res) => {
+    const review = req.body
+    const update = await Book.updateOne({ BookId: req.params.id }, { $push: { Reviews: review } })
+    console.log(review);
+    console.log(update);
+    res.status(200)
+})
+
+app.patch('/api/book/:id', async (req, res) => {
+
 })
 
 
