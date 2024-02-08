@@ -1,6 +1,6 @@
-function Book(props) {
+function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails}) {
 
-    const book = props.book;
+    //const book = props.book;
 
     /*BookId: String,
     Title: String,
@@ -16,20 +16,24 @@ function Book(props) {
 
     return (
         <div className="list-item-root">
-            <img src={book.BookImage} alt="Book Index Image" />
-            <p>{book.Title}</p>
-            <p>Written by: {book.Author}</p>
-            <p>{book.Genre}</p>                   {/*Might need to change to .map, in case it becomaes an array*/}
-            {props.bookItemtype === "store" ? (
-                <>
-                    <button>Add to collection</button>
-                    <button>Show details</button>
+            <img src={book.bookImage} alt="Book Index Image" />
+            <p>{book.title}</p>
+            <p>Written by: {book.author}</p>
+            <p>{book.genre}</p>                   {/*Might need to change to .map, in case it becomaes an array*/}
+            {bookItemtype === "library" ? (
+                <> {isLoggedIn ?<>
+                    <button>Add to collection</button> 
+                    <button onClick={()=>{onShowDetails(book); console.log(book)}}>Show details</button>
+                    </>
+                    :
+                    <button onClick={()=>{onShowDetails(book); console.log(book)}}>Show details</button>
+                }
                 </>
             )
-                : props.bookItemtype === "collection" ? (
+                : bookItemtype === "collection" ? (
                     <>
                         <button>Remove from collection</button>
-                        <button>Show details</button>
+                        <button onClick={()=>{onShowDetails(book); console.log(book)}}>Show details</button>
                         <button>⭐</button>
                     </>
                 ) : (
