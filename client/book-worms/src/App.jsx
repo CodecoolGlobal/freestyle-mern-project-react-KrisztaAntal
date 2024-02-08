@@ -1,17 +1,42 @@
 import { useState } from 'react'
+
 import ItemList from './components/ItemList.jsx'
 import './App.css'
 
+
 function App() {
+  
+  const [collectedBooks, setCollectedBooks] = useState([]);
+
+  const handleAddToCollectClick = async (book, name, isRead, isFavorite) => {
+    const title = book.volumeInfo.title;
+    const bookId = book.volumeInfo.bookId;
+    const selfLink = book.selfLink
+
+    try {
+      const response = await fetch('/api/addToCollection', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, bookId, title, isRead, isFavorite, selfLink })
+      });
+      setCollectedBooks(response)
+      console.log(response)
+    } catch (error) {
+      console.error('Error adding book to collection:', error);
+    }
+  };
+  
   const [siteType, setSiteType] = useState('store');
   return (
     <>
       <div className="parent">
         <header className="header">
-          <div className='header-title'>Boooook site</div>
-          <button className='header-item'>menu1</button>
-          <button className='header-item'>menu2</button>
-          <button className='header-item'>menu3</button>
+          <div className='header-title'>The Cult of Stories</div>
+          <button className='header-item'>Library</button>
+          <button className='header-item'>Collection</button>
+          <button className='header-item'>Log In</button>
         </header>
 
         {siteType === 'store' ? (
