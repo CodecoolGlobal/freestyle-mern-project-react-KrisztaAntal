@@ -1,9 +1,8 @@
-
 import missingBook from '../assets/missing-book-image.jpg'
 
-function Book(props) {
+function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails}) {
 
-    const book = props.book;
+    //const book = props.book;
 
     return (
         <div className="list-item-root">
@@ -12,20 +11,23 @@ function Book(props) {
             ) : (
                 <img src={missingBook} alt="Book Index Image" /> 
             )}
-            
             <p>{book.title}</p>
             <p>Written by: {book.author}</p>
             <p>{book.genre}</p>                   {/*Might need to change to .map, in case it becomaes an array*/}
-            {props.bookItemtype === "library" ? (
-                <>
-                    <button>Add to collection</button>
-                    <button>Show details</button>
+            {bookItemtype === "library" ? (
+                <> {isLoggedIn ?<>
+                    <button>Add to collection</button> 
+                    <button onClick={()=>{onShowDetails(book); console.log(book)}}>Show details</button>
+                    </>
+                    :
+                    <button onClick={()=>{onShowDetails(book); console.log(book)}}>Show details</button>
+                }
                 </>
             )
-                : props.bookItemtype === "collection" ? (
+                : bookItemtype === "collection" ? (
                     <>
                         <button>Remove from collection</button>
-                        <button>Show details</button>
+                        <button onClick={()=>{onShowDetails(book); console.log(book)}}>Show details</button>
                         <button>⭐</button>
                     </>
                 ) : (
