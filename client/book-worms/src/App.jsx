@@ -7,6 +7,8 @@ import DetailedBook from './components/DetailedBook'
 
 
 function App() {  
+
+  const [siteType, setSiteType] = useState('library');
   const [collectedBooks, setCollectedBooks] = useState([]);
 
   const handleAddToCollectClick = async (book, name, isRead, isFavorite) => {
@@ -28,8 +30,14 @@ function App() {
       console.error('Error adding book to collection:', error);
     }
   };
+
+  async function fetchAllBooks(){
+    const response = await fetch("/api/books/all");
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
   
-  const [siteType, setSiteType] = useState('library');
   return (
     <>
       <div className="parent">
@@ -45,7 +53,7 @@ function App() {
             <div className='menu-bar'>
               <h3>Filters</h3>
             </div>
-            <div className="content"><ItemList></ItemList></div>
+            <div className="content"><ItemList fetchList={fetchAllBooks} bookItemtype={siteType}></ItemList></div>
           </>
 
         ) : siteType === 'collection' ? (

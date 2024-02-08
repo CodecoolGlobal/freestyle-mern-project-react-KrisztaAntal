@@ -5,12 +5,17 @@ import Book from "./model/Book.js";
 import UserBook from "./model/UserBook.js";
 import User from "./model/User.js";
 
-async function connectMongoose() {
-    await mongoose.connect(process.env.MONGO_DB_URL);
-}
 
 const app = express();
 const PORT = 8080;
+
+async function connectMongoose() {
+    await mongoose.connect(process.env.MONGO_DB_URL);
+    console.log("connected");
+}
+
+//connectMongoose();
+
 
 app.use(express.json());
 
@@ -38,6 +43,23 @@ app.patch('/api/book/:id', async (req, res) => {
 })
 
 
+
+app.get('/api/books/all', async (req, res) => {
+    await connectMongoose();
+    const bookList = await Book.find({})
+    res.json(bookList);
+    await mongoose.disconnect();
+/*
+    try {
+        const bookList = await Book.find({})
+        res.json(bookList);
+        //res.sendStatus(200)
+    } catch (error) {
+        res.send(error);
+        res.sendStatus(500);
+    }
+*/
+})
 
 
 app.post('/api/addToCollection', async (req, res) => {
