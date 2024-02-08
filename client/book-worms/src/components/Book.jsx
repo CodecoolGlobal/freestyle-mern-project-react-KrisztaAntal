@@ -11,7 +11,6 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails}) {
             ) : (
                 <img src={missingBook} alt="Book Index Image" /> 
             )}
-            <img src={book.bookImage} alt="Book Index Image" />
             <p>{book.title}</p>
             <p>Written by: {book.author}</p>
             <p>{book.genre}</p>                   {/*Might need to change to .map, in case it becomaes an array*/}

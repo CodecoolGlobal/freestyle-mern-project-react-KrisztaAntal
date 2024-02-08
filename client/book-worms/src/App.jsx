@@ -11,7 +11,7 @@ function App() {
   const [siteType, setSiteType] = useState('library');
   const [collectedBooks, setCollectedBooks] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [chosenBook, setChosenBook] = useState(null)
 
