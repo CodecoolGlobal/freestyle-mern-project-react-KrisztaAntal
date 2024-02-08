@@ -1,11 +1,12 @@
+
 import { useState } from 'react'
 
 import ItemList from './components/ItemList.jsx'
 import './App.css'
+import DetailedBook from './components/DetailedBook'
 
 
-function App() {
-  
+function App() {  
   const [collectedBooks, setCollectedBooks] = useState([]);
 
   const handleAddToCollectClick = async (book, name, isRead, isFavorite) => {
