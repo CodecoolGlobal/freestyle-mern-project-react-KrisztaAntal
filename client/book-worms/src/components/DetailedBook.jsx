@@ -46,10 +46,10 @@ function DetailedBook() {
         (isAdmin
             ? <EditDetailedBook bookinfo1={bookInfo} bookinfo2={bookInfo2}></EditDetailedBook>
             : <>
-                <img src={bookInfo.BookImage}></img>
-                <h1>{bookInfo.Title}</h1>
-                <h2>Authors: {bookInfo.Author}{/* {bookInfo.authors.map(author => <h3 key={author}>{author}</h3>)} */}</h2>
-                <h3>Category: {bookInfo.Genre}{/* {bookInfo.categories.map(category => <li key={category}>{category}</li>)} */}</h3>
+                <img src={bookInfo.bookImage}></img>
+                <h1>{bookInfo.title}</h1>
+                <h2>Authors: {bookInfo.author}{/* {bookInfo.authors.map(author => <h3 key={author}>{author}</h3>)} */}</h2>
+                <h3>Category: {bookInfo.genre}{/* {bookInfo.categories.map(category => <li key={category}>{category}</li>)} */}</h3>
                 <p>Published at: {parseInt(bookInfo2.publishedDate)}</p>
                 <p>{bookInfo2.description}</p>
                 <div>
@@ -70,8 +70,8 @@ function DetailedBook() {
                         </>
                         : <p>To add a review, please log in!</p>}
                     <div>
-                        <h3>Average rate: {bookInfo.Reviews.reduce((rateSum, review )=> rateSum + parseInt(review.rate),0)/bookInfo.Reviews.length}</h3>
-                        <p>{bookInfo.Reviews.map(review => <p key={review.txt}><p>Rate: {review.rate}</p><p>Review: {review.txt}</p></p>)}</p>
+                        <h3>Average rate: {bookInfo.reviews.reduce((rateSum, review )=> rateSum + parseInt(review.rate),0)/bookInfo.reviews.length}</h3>
+                        <p>{bookInfo.reviews.map(review => <p key={review.txt}><p>Rate: {review.rate}</p><p>Review: {review.txt}</p></p>)}</p>
                     </div>
                 </div>
             </>))

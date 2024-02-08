@@ -2,17 +2,17 @@ import { useState } from "react";
 
 function EditDetailedBook({ bookinfo1, bookinfo2 }) {
     console.log(bookinfo1);
-    const [imgLink, setImgLink] = useState(bookinfo1.BookImage);
-    const [title, setTitle] = useState(bookinfo1.Title);
-    const [author, setAuthor] = useState(bookinfo1.Author);
-    const [category, setCategory] = useState(bookinfo1.Genre);
+    const [imgLink, setImgLink] = useState(bookinfo1.bookImage);
+    const [title, setTitle] = useState(bookinfo1.title);
+    const [author, setAuthor] = useState(bookinfo1.author);
+    const [category, setCategory] = useState(bookinfo1.genre);
     const [pubYear, setPubYear] = useState(bookinfo2.publishedDate);
     const [description, setDescription] = useState(bookinfo2.description);
     const [update, setUpdate] = useState({});
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const res = await fetch(`/api/book/${bookinfo1.BookId}`, {
+        const res = await fetch(`/api/book/${bookinfo1.bookId}`, {
             method: 'PATCH',
             headers: { 'Contetnt-Type': 'application/json' },
             body: JSON.stringify(update)
