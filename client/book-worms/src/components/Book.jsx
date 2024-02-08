@@ -1,21 +1,16 @@
+import missingBook from '../assets/missing-book-image.jpg'
+
 function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails}) {
 
     //const book = props.book;
 
-    /*BookId: String,
-    Title: String,
-    Author: String,
-    Genre: String,
-    BookImage: String,
-    Deatail URL: String,
-    Reviews: Array, Object {
-        Rating: Integer,
-        Comment: String,
-        Commenter: String
-    }*/
-
     return (
         <div className="list-item-root">
+            {book.bookImage !== null ? (
+                <img src={book.bookImage} alt="Book Index Image" /> 
+            ) : (
+                <img src={missingBook} alt="Book Index Image" /> 
+            )}
             <img src={book.bookImage} alt="Book Index Image" />
             <p>{book.title}</p>
             <p>Written by: {book.author}</p>

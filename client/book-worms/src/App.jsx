@@ -6,9 +6,10 @@ import './App.css'
 import DetailedBook from './components/DetailedBook'
 
 
-function App() {
-  const [collectedBooks, setCollectedBooks] = useState([]);
+function App() {  
+
   const [siteType, setSiteType] = useState('library');
+  const [collectedBooks, setCollectedBooks] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isAdmin, setIsAdmin] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
@@ -44,6 +45,13 @@ function App() {
     }
   };
 
+  async function fetchAllBooks(){
+    const response = await fetch("/api/books/all");
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+  
   return (
     <>
       <div className="parent">
@@ -62,7 +70,7 @@ function App() {
                 <div className='menu-bar'>
                   <h3>Filters</h3>
                 </div>
-                <div className="content"><ItemList onShowDetails={handleShowDetails} isLoggedIn={isLoggedIn} isAdmin={isAdmin}></ItemList></div>
+                <div className="content"><ItemList fetchList={fetchAllBooks} bookItemtype={siteType} onShowDetails={handleShowDetails} isLoggedIn={isLoggedIn} isAdmin={isAdmin}></ItemList></div>
               </>
 
             ) : siteType === 'collection' ? (

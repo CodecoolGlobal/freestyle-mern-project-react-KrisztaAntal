@@ -4,16 +4,23 @@ import "dotenv/config";
 import Book from "./model/Book.js";
 import UserBook from "./model/UserBook.js";
 
-mongoose.connect(process.env.MONGO_DB_URL);
+//mongoose.connect(process.env.MONGO_DB_URL);
 const app = express();
 const PORT = 8080;
+
+async function connectMongoose() {
+    await mongoose.connect(process.env.MONGO_DB_URL);
+    await console.log("connected");
+}
+
+connectMongoose();
+
 
 app.use(express.json());
 
 app.get('/api/book/:id', async (req, res) => {
     const idToFind = req.params.id
     const book = await Book.findOne({ BookId: idToFind })
-    //console.log(book);
     res.send(book)
 });
 
@@ -27,6 +34,25 @@ app.post('/api/book/:id', async (req, res) => {
 
 app.patch('/api/book/:id', async (req, res) => {
 
+})
+
+
+
+app.get('/api/books/all', async (req, res) => {
+
+    const bookList = await Book.find({})
+    res.json(bookList);
+
+/*
+    try {
+        const bookList = await Book.find({})
+        res.json(bookList);
+        //res.sendStatus(200)
+    } catch (error) {
+        res.send(error);
+        res.sendStatus(500);
+    }
+*/
 })
 
 
