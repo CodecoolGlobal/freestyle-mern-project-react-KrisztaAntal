@@ -1,9 +1,11 @@
 import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+
+import ItemList from './components/ItemList.jsx'
 import './App.css'
 
+
 function App() {
+  
   const [collectedBooks, setCollectedBooks] = useState([]);
 
   const handleAddToCollectClick = async (book, name, isRead, isFavorite) => {
@@ -25,11 +27,48 @@ function App() {
       console.error('Error adding book to collection:', error);
     }
   };
-
+  
+  const [siteType, setSiteType] = useState('store');
   return (
-    <div>
-      <button onClick={handleAddToCollectClick}>Add to collection</button>
-    </div>
+    <>
+      <div className="parent">
+        <header className="header">
+          <div className='header-title'>The Cult of Stories</div>
+          <button className='header-item'>Library</button>
+          <button className='header-item'>Collection</button>
+          <button className='header-item'>Log In</button>
+        </header>
+
+        {siteType === 'store' ? (
+          <>
+            <div className='menu-bar'>
+              <h3>Filters</h3>
+            </div>
+            <div className="content"><ItemList></ItemList></div>
+          </>
+
+        ) : siteType === 'collection' ? (
+          <>
+            <div className='menu-bar'>
+              <h3>Filters</h3>
+            </div>
+            <div className="content"><ItemList></ItemList></div>
+          </>
+
+        ) : siteType === 'admin' ? (
+          <>
+            <div className='menu-bar'>
+              <h3>Filters</h3>
+            </div>
+            <div className="content"><ItemList></ItemList></div>
+          </>
+        ) : (
+          <><div style={{'text-align': 'center'}}><h1>Something went wrong! Please refresh the site</h1></div></>
+        )}
+
+
+      </div>
+    </>
   )
 }
 
