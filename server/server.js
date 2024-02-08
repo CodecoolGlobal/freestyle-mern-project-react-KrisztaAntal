@@ -18,7 +18,6 @@ connectMongoose();
 
 app.use(express.json());
 
-
 app.get('/api/book/:id', async (req, res) => {
     const idToFind = req.params.id
     //await connectMongoose();
@@ -28,15 +27,15 @@ app.get('/api/book/:id', async (req, res) => {
     res.send(book)
 });
 
-app.post('/api/book/:id', async (req, res) => {
+app.post('/api/books/:id/review', async (req, res) => {
     const review = req.body
     //await connectMongoose();
-    const update = await Book.updateOne({ bookId: req.params.id }, { $push: { reviews: review } })
+    const update = await Book.findOneAndUpdate({ bookId: req.params.id }, { $push: { reviews: review } }, {new:true})
     //await mongoose.disconnect();
     console.log(review);
     console.log(update);
     
-    res.sendStatus(200)
+    res.json(update.reviews.at(-1))
 })
 
 app.patch('/api/book/:id', async (req, res) => {

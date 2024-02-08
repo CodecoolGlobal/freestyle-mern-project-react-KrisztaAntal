@@ -6,14 +6,15 @@ import './App.css'
 import DetailedBook from './components/DetailedBook'
 
 
-function App() {  
+function App() {
 
   const [siteType, setSiteType] = useState('library');
   const [collectedBooks, setCollectedBooks] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const [chosenBook, setChosenBook] = useState(null)
+  const [chosenBook, setChosenBook] = useState(null);
+  const [user, setUser] = useState('Eszter')
 
 
   function handleShowDetails(book) {
@@ -21,7 +22,7 @@ function App() {
     setChosenBook(book);
   }
 
-  function handleBack(){
+  function handleBack() {
     setShowDetails(false);
   }
 
@@ -45,13 +46,13 @@ function App() {
     }
   };
 
-  async function fetchAllBooks(){
+  async function fetchAllBooks() {
     const response = await fetch("/api/books/all");
     const data = await response.json();
     console.log(data);
     return data;
   }
-  
+
   return (
     <>
       <div className="parent">
@@ -59,7 +60,8 @@ function App() {
           <div className='header-title'>The Cult of Stories</div>
           <button className='header-item'>Library</button>
           <button className='header-item'>Collection</button>
-          <button className='header-item'>Log In</button>
+          {isLoggedIn ? <p>Hello, {user}!</p> :
+            <button className='header-item'>Log In</button>}
         </header>
         <>
           {showDetails ?
