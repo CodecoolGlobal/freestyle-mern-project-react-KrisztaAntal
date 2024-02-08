@@ -1,20 +1,11 @@
 import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
-const readStatusSchema = new Schema({
-    PageCount: Number,
-    CurrentPageCount: Number
-})
-
 const userBookSchema = new Schema({
     BookId: String,
-    BookTitle: String,
     IsRead: Boolean,
     IsFavorite: Boolean,
-    ReadStatus: {
-        type: readStatusSchema,
-        default: {}
-    },
-    DetailLink: String,
+    CurrentPageCount: Number
 });
+
 export default model('UserBook', userBookSchema);
