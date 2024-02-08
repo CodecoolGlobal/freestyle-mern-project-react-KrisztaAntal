@@ -11,28 +11,28 @@ const PORT = 8080;
 
 async function connectMongoose() {
     await mongoose.connect(process.env.MONGO_DB_URL);
-    console.log("connected");
+    await console.log("connected");
 }
 
-//connectMongoose();
+connectMongoose();
 
 
 app.use(express.json());
 
 app.get('/api/book/:id', async (req, res) => {
     const idToFind = req.params.id
-    await connectMongoose();
+    //await connectMongoose();
     const book = await Book.findOne({ BookId: idToFind })
-    await mongoose.disconnect();
+    //await mongoose.disconnect();
     //console.log(book);
     res.send(book)
 });
 
 app.post('/api/book/:id', async (req, res) => {
     const review = req.body
-    await connectMongoose();
+    //await connectMongoose();
     const update = await Book.updateOne({ BookId: req.params.id }, { $push: { Reviews: review } })
-    await mongoose.disconnect();
+    //await mongoose.disconnect();
     console.log(review);
     console.log(update);
     res.status(200)
@@ -45,10 +45,10 @@ app.patch('/api/book/:id', async (req, res) => {
 
 
 app.get('/api/books/all', async (req, res) => {
-    await connectMongoose();
+    //await connectMongoose();
     const bookList = await Book.find({})
     res.json(bookList);
-    await mongoose.disconnect();
+    //await mongoose.disconnect();
 /*
     try {
         const bookList = await Book.find({})
@@ -65,9 +65,9 @@ app.get('/api/books/all', async (req, res) => {
 app.post('/api/addToCollection', async (req, res) => {
     try {
         const { name, bookId, title, isRead, isFavorite, selflink } = req.body;
-        await connectMongoose();
+       // await connectMongoose();
         await UserBook.findOneAndUpdate({ Name: name }, { Books: { BookId: bookId, BookTitle: title, isRead: isRead, isFavorite: isFavorite, DetailLink: selflink } })
-        await mongoose.disconnect();
+        //await mongoose.disconnect();
         res.json({ success: true });
     } catch (error) {
         console.error('Error adding book to collection:', error);
@@ -78,11 +78,11 @@ app.post('/api/addToCollection', async (req, res) => {
 app.put("/api/updateUserBook", async (req, res) => {
     try {
         const { isRead, bookId } = req.body;
-        await connectMongoose();
+        //await connectMongoose();
         const userBook = await UserBook.findOneAndUpdate(
             { BookId: bookId }, { IsRead: isRead },
             );
-        await mongoose.disconnect();
+       //await mongoose.disconnect();
             res.json(userBook);
         } catch (error) {
             console.error("Error updating user book:", error);
@@ -92,11 +92,11 @@ app.put("/api/updateUserBook", async (req, res) => {
     
     app.get("/api/users/:name", async (req, res)=> {
         const userName = req.params.name;
-        await connectMongoose();
+        //await connectMongoose();
         const user =  await User.findOne({name: userName})
             .populate("usersBooks.book")
             .exec();
-        mongoose.disconnect;    
+        //mongoose.disconnect;    
         res.status(200).send(userName);
     })
     
