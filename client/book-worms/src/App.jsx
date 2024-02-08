@@ -28,7 +28,7 @@ function App() {
     }
   };
   
-  const [siteType, setSiteType] = useState('store');
+  const [siteType, setSiteType] = useState('library');
   return (
     <>
       <div className="parent">
@@ -39,7 +39,7 @@ function App() {
           <button className='header-item'>Log In</button>
         </header>
 
-        {siteType === 'store' ? (
+        {siteType === 'library' ? (
           <>
             <div className='menu-bar'>
               <h3>Filters</h3>
