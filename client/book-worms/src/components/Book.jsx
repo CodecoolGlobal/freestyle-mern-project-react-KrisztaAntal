@@ -1,9 +1,53 @@
 import { useState } from 'react';
 import missingBook from '../assets/missing-book-image.jpg'
 
-function Book({ book, bookItemtype, isLoggedIn, isAdmin = false, onShowDetails }) {
+function Book({ book, bookItemtype: pageType, isLoggedIn, isAdmin}) {
+    /*return (
+        <div className="list-item-root">
+            {book.bookImage !== null ? (
+                <img src={book.bookImage} alt="Book Index Image" />
+            ) : (
+                <img src={missingBook} alt="Book Index Image" />
+            )}
+            <p>{book.title}</p>
+            <p>Written by: {book.author}</p>
+            <p>{book.genre}</p>
+            {bookItemtype === "library" ? (
+                <> {isLoggedIn ? <>
+                    <button onClick={() => handleAddToCollection(book)}>Add to collection</button>                    <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
+                </>
+                    :
+                    <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
+                }
+                </>
+            )
+                : bookItemtype === "collection" ? (
+                    <>
+                        <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button> <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
+                        <button>⭐</button>
+                    </>
+                ) : (
+                    <>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </>
 
-    /*const [collectedBooks, setCollectedBooks] = useState(null)
+                )
+            }
+        </div>
+    )*/
+
+
+    /*return (
+        <div className="list-root-item">
+            <h1>Book</h1>,
+            <h1>{book.title}</h1>
+        </div>
+
+    )*/
+
+    
+    const [collectedBooks, setCollectedBooks] = useState(null)
 
     const handleAddToCollection = async (book, userId) => {
         const body = {
@@ -51,7 +95,7 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin = false, onShowDetails }
             <p>{book.title}</p>
             <p>Written by: {book.author}</p>
             <p>{book.genre}</p>
-            {bookItemtype === "library" ? (
+            {pageType === "library" ? (
                 <> {isLoggedIn ? <>
                     <button onClick={() => handleAddToCollection(book)}>Add to collection</button>                    <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
                 </>
@@ -60,7 +104,7 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin = false, onShowDetails }
                 }
                 </>
             )
-                : bookItemtype === "collection" ? (
+                : pageType === "collection" ? (
                     <>
                         <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button> <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
                         <button>⭐</button>
@@ -74,7 +118,7 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin = false, onShowDetails }
                 )
             }
         </div>
-    )*/
+    )
 }
 
 export default Book;

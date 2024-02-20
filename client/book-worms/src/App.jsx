@@ -1,19 +1,19 @@
 
-import { useState } from 'react'
+/*import { useState } from 'react'
 import ItemList from './components/BookList.jsx'
-import './App.css'
-import DetailedBook from './components/DetailedBook'
+
+import DetailedBook from './components/DetailedBook'*/
 import { Outlet, Link } from "react-router-dom";
-
-
+import Library from "./Pages/Library.jsx"
+import './App.css'
 
 function App() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  /*const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [chosenBook, setChosenBook] = useState(null);
   const [user, setUser] = useState('Stranger')
-
+*/
 
 
   return (
@@ -25,13 +25,15 @@ function App() {
           <button className='header-item'>Collection</button>
           {/*<Link to={"/collection"}>
             <button className='header-item'>Collection</button>
-          </Link>*/}
+          </Link>
           {isLoggedIn ? <p>Hello, {user}!</p> :
-            <button className='header-item'>Log In</button>}
+            <button className='header-item'>Log In</button>}*/}
         </header>
         <Outlet />
 
-
+        <div className="content">
+          <Library></Library>
+        </div>
         <>
           {/*showDetails ?
             <DetailedBook

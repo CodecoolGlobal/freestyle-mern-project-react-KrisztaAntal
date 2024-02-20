@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Book from "./Book"
 
-function ItemList({ isLoggedIn, isAdmin, books }) {
+function BookList({ isLoggedIn, isAdmin, books }) {
     /*const [showDetails, setShowDetails] = useState(false);
     const [chosenBook, setChosenBook] = useState(null);
     const [list, setList] = useState();
@@ -9,15 +9,19 @@ function ItemList({ isLoggedIn, isAdmin, books }) {
 
     const [bookList] = useState(books)
 
+    console.log("listning books");
     return (
-        bookList.map((book) =>
+        bookList.map((book) => (
             <Book
-                isLoggedIn={isLoggedIn}
-                isAdmin={isAdmin}
+                key={book.bookId} 
                 book={book}
-                key={book.bookId}
+                isAdmin={false}
                 pageType={"library"}
-            />)
+            />
+        ))
     )
 }
-export default ItemList;
+//book, bookItemtype, isLoggedIn, isAdmin = false, onShowDetails
+/* isLoggedIn={false}*/
+                
+export default BookList;
