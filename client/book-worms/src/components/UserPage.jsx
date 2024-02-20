@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import Book from "./Book";
 
-function UserPage() {
+function UserPage({ collectedBooks }) {
     const [isChecked, setIsChecked] = useState(false);
     const [currentPageCount, setCurrentPageCount] = useState(0);
     const [pageCount, setPageCount] = useState(0);
@@ -34,6 +35,10 @@ function UserPage() {
 
     return (
         <div>
+            <Book
+                books={collectedBooks}
+                bookItemtype={"collection"}
+                onShowDetails={ } />
             <label>
                 I have read it:
                 <input

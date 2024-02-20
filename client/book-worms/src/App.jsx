@@ -1,9 +1,9 @@
 
 import { useState } from 'react'
-
 import ItemList from './components/ItemList.jsx'
 import './App.css'
 import DetailedBook from './components/DetailedBook'
+import { Link } from "react-router-dom";
 
 
 function App() {
@@ -26,26 +26,6 @@ function App() {
     setShowDetails(false);
   }
 
-  const handleAddToCollectClick = async (book, name, isRead, isFavorite) => {
-    const title = book.volumeInfo.title;
-    const bookId = book.volumeInfo.bookId;
-    const selfLink = book.selfLink
-
-    try {
-      const response = await fetch('/api/addToCollection', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, bookId, title, isRead, isFavorite, selfLink })
-      });
-      setCollectedBooks(response)
-      console.log(response)
-    } catch (error) {
-      console.error('Error adding book to collection:', error);
-    }
-  };
-
   async function fetchAllBooks() {
     const response = await fetch("/api/books/all");
     const data = await response.json();
@@ -60,6 +40,9 @@ function App() {
           <div className='header-title'>The Cult of Stories</div>
           <button className='header-item'>Library</button>
           <button className='header-item'>Collection</button>
+          <Link to={"/collection"}>
+            <button className='header-item'>Collection</button>
+          </Link>
           {isLoggedIn ? <p>Hello, {user}!</p> :
             <button className='header-item'>Log In</button>}
         </header>
@@ -72,7 +55,14 @@ function App() {
                 <div className='menu-bar'>
                   <h3>Filters</h3>
                 </div>
-                <div className="content"><ItemList fetchList={fetchAllBooks} bookItemtype={siteType} onShowDetails={handleShowDetails} isLoggedIn={isLoggedIn} isAdmin={isAdmin}></ItemList></div>
+                <div className="content">
+                  <ItemList
+                    fetchList={fetchAllBooks}
+                    bookItemtype={siteType}
+                    onShowDetails={handleShowDetails}
+                    isLoggedIn={isLoggedIn}
+                    isAdmin={isAdmin} />
+                </div>
               </>
 
             ) : siteType === 'collection' ? (
@@ -80,7 +70,13 @@ function App() {
                 <div className='menu-bar'>
                   <h3>Filters</h3>
                 </div>
-                <div className="content"><ItemList onBack={handleBack} onShowDetails={handleShowDetails} isLoggedIn={isLoggedIn} isAdmin={isAdmin}></ItemList></div>
+                <div className="content">
+                  <ItemList
+                    onBack={handleBack}
+                    onShowDetails={handleShowDetails}
+                    isLoggedIn={isLoggedIn}
+                    isAdmin={isAdmin} />
+                </div>
               </>
 
             ) : siteType === 'admin' ? (
@@ -88,7 +84,13 @@ function App() {
                 <div className='menu-bar'>
                   <h3>Filters</h3>
                 </div>
-                <div className="content"><ItemList onBack={handleBack} onShowDetails={handleShowDetails} isLoggedIn={isLoggedIn} isAdmin={isAdmin}></ItemList></div>
+                <div className="content">
+                  <ItemList
+                    onBack={handleBack}
+                    onShowDetails={handleShowDetails}
+                    isLoggedIn={isLoggedIn}
+                    isAdmin={isAdmin} />
+                </div>
               </>
             ) : (
               <><div style={{ 'text-align': 'center' }}><h1>Something went wrong! Please refresh the site</h1></div></>

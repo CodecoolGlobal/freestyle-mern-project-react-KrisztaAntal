@@ -26,11 +26,14 @@ function ItemList({ isLoggedIn, isAdmin, onShowDetails, onBack, fetchList, bookI
             {list ?
                 (
                     list.map((book) =>
-                        <Book onShowDetails={onShowDetails}
+                        <Book
+                            onShowDetails={onShowDetails}
                             isLoggedIn={isLoggedIn}
-                            isAdmin={isAdmin} book={book} key={book.bookId}
-                            bookItemtype={bookItemtype}>
-                        </Book>)
+                            isAdmin={isAdmin}
+                            book={book}
+                            key={book.bookId}
+                            bookItemtype={bookItemtype}
+                        />)
                 ) : (
                     <h1>Loading...</h1>
                 )}
