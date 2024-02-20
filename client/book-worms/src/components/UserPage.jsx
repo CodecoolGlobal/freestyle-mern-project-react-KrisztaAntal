@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import Book from "./Book";
+
+const fetchCollectedBooks = () => {
+    return fetch("/api/employees/collected").then((res) => res.json());
+}
 
 function UserPage() {
     const [isChecked, setIsChecked] = useState(false);
     const [currentPageCount, setCurrentPageCount] = useState(0);
     const [pageCount, setPageCount] = useState(0);
+    const [collectedBooks, setCollectedBooks] = useState(null)
 
     const handleCheckboxChange = async () => {
         setIsChecked(!isChecked);
@@ -31,9 +37,20 @@ function UserPage() {
         return Math.round((currentPageCount / pageCount) * 100);
     };
 
+    useEffect(() => {
+        fetchCollectedBooks()
+            .then((collectedBooks) => {
+                setCollectedBooks(collectedBooks)
+            })
+    }, [])
 
     return (
         <div>
+            <Book
+                books={collectedBooks}
+                bookItemtype={"collection"}
+            // onShowDetails={ }
+            />
             <label>
                 I have read it:
                 <input

@@ -27,14 +27,19 @@ app.get('/api/book/:id', async (req, res) => {
     res.send(book)
 });
 
+app.get('/api/employees/collected', async (req, res) => {
+    const collectedBooks = await UserBook.find()
+    res.json(collectedBooks)
+})
+
 app.post('/api/books/:id/review', async (req, res) => {
     const review = req.body
     //await connectMongoose();
-    const update = await Book.findOneAndUpdate({ bookId: req.params.id }, { $push: { reviews: review } }, {new:true})
+    const update = await Book.findOneAndUpdate({ bookId: req.params.id }, { $push: { reviews: review } }, { new: true })
     //await mongoose.disconnect();
     console.log(review);
     console.log(update);
-    
+
     res.json(update.reviews.at(-1))
 })
 
@@ -49,31 +54,54 @@ app.get('/api/books/all', async (req, res) => {
     const bookList = await Book.find({})
     res.json(bookList);
     //await mongoose.disconnect();
-/*
-    try {
-        const bookList = await Book.find({})
-        res.json(bookList);
-        //res.sendStatus(200)
-    } catch (error) {
-        res.send(error);
-        res.sendStatus(500);
-    }
-*/
+    /*
+        try {
+            const bookList = await Book.find({})
+            res.json(bookList);
+            //res.sendStatus(200)
+        } catch (error) {
+            res.send(error);
+            res.sendStatus(500);
+        }
+    */
 })
 
 
-app.post('/api/addToCollection', async (req, res) => {
+app.patch('/api/users/:userId/addToCollection', async (req, res) => {
+    const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/
+    const book = req.body;
+    console.log(userId);
     try {
-        const { name, bookId, title, isRead, isFavorite, selflink } = req.body;
-        //await connectMongoose();
-        await UserBook.findOneAndUpdate({ Name: name }, { Books: { BookId: bookId, BookTitle: title, isRead: isRead, isFavorite: isFavorite, DetailLink: selflink } })
+        const collectedBook = await User.findOneAndUpdate({ _id: userId }, { $push: { usersBooks: book } }, { new: true });
         //await mongoose.disconnect();
-        res.json({ success: true });
+        return res.json(collectedBook);
     } catch (error) {
         console.error('Error adding book to collection:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.patch('/api/users/:userId/removeFromCollection/:bookId', async (req, res) => {
+    const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/
+    const bookId = req.params.bookId
+    try {
+        const updatedUser = await User.findOneAndUpdate({ _id: userId }, { $pull: { usersBooks: { "book._id": bookId } } }, { new: true });
+        //await mongoose.disconnect();
+        return res.json(updatedUser);
+    } catch (errror) {
+        return console.error(error)
+    }
+})
+
+app.delete('/api/removeFromCollection/:id', async (req, res) => {
+    try {
+        const book = await UserBook.findById(req.params.id);
+        const deleted = await book.delete()
+        return res.json(deleted)
+    } catch (err) {
+        return console.error(error)
+    }
+})
 
 app.put("/api/updateUserBook", async (req, res) => {
     try {
@@ -81,27 +109,26 @@ app.put("/api/updateUserBook", async (req, res) => {
         //await connectMongoose();
         const userBook = await UserBook.findOneAndUpdate(
             { BookId: bookId }, { IsRead: isRead },
-            );
+        );
         //await mongoose.disconnect();
-            res.json(userBook);
-        } catch (error) {
-            console.error("Error updating user book:", error);
-            res.status(500).json({ error: "Error updating user book" });
-        }
-    });
-    
-    app.get("/api/users/:name", async (req, res)=> {
-        const userName = req.params.name;
-        //await connectMongoose();
-        const user =  await User.findOne({name: userName})
-            .populate("usersBooks.book")
-            .exec();
-        //mongoose.disconnect;    
-        res.status(200).send(userName);
-    })
-    
-    
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
-    })
-    
+        res.json(userBook);
+    } catch (error) {
+        console.error("Error updating user book:", error);
+        res.status(500).json({ error: "Error updating user book" });
+    }
+});
+
+app.get("/api/users/:name", async (req, res) => {
+    const userName = req.params.name;
+    //await connectMongoose();
+    const user = await User.findOne({ name: userName })
+        .populate("usersBooks.book")
+        .exec();
+    //mongoose.disconnect;    
+    res.status(200).send(userName);
+})
+
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+})
