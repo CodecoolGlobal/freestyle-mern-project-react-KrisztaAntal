@@ -27,13 +27,18 @@ app.get('/api/book/:id', async (req, res) => {
     res.send(book)
 });
 
+app.get('/api/employees/collected', async (req, res) => {
+    const collectedBooks = await UserBook.find()
+    res.json(collectedBooks)
+})
+
 app.post('/api/books/:id/review', async (req, res) => {
     const review = req.body
     //await connectMongoose();
     const update = await Book.findOneAndUpdate({ bookId: req.params.id }, { $push: { reviews: review } }, { new: true })
     //await mongoose.disconnect();
-    //console.log(review);
-    //console.log(update);
+    console.log(review);
+    console.log(update);
 
     res.json(update.reviews.at(-1))
 })
@@ -71,18 +76,41 @@ app.get('/api/books/all', async (req, res) => {
 })
 
 
-app.post('/api/addToCollection', async (req, res) => {
+app.patch('/api/users/:userId/addToCollection', async (req, res) => {
+    const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/
+    const book = req.body;
+    console.log(userId);
     try {
-        const { name, bookId, title, isRead, isFavorite, selflink } = req.body;
-        //await connectMongoose();
-        await UserBook.findOneAndUpdate({ Name: name }, { Books: { BookId: bookId, BookTitle: title, isRead: isRead, isFavorite: isFavorite, DetailLink: selflink } })
+        const collectedBook = await User.findOneAndUpdate({ _id: userId }, { $push: { usersBooks: book } }, { new: true });
         //await mongoose.disconnect();
-        res.json({ success: true });
+        return res.json(collectedBook);
     } catch (error) {
         console.error('Error adding book to collection:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.patch('/api/users/:userId/removeFromCollection/:bookId', async (req, res) => {
+    const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/
+    const bookId = req.params.bookId
+    try {
+        const updatedUser = await User.findOneAndUpdate({ _id: userId }, { $pull: { usersBooks: { "book._id": bookId } } }, { new: true });
+        //await mongoose.disconnect();
+        return res.json(updatedUser);
+    } catch (errror) {
+        return console.error(error)
+    }
+})
+
+app.delete('/api/removeFromCollection/:id', async (req, res) => {
+    try {
+        const book = await UserBook.findById(req.params.id);
+        const deleted = await book.delete()
+        return res.json(deleted)
+    } catch (err) {
+        return console.error(error)
+    }
+})
 
 app.put("/api/updateUserBook", async (req, res) => {
     try {
