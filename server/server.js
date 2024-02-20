@@ -30,15 +30,24 @@ app.get('/api/book/:id', async (req, res) => {
 app.post('/api/books/:id/review', async (req, res) => {
     const review = req.body
     //await connectMongoose();
-    const update = await Book.findOneAndUpdate({ bookId: req.params.id }, { $push: { reviews: review } }, {new:true})
+    const update = await Book.findOneAndUpdate({ bookId: req.params.id }, { $push: { reviews: review } }, { new: true })
     //await mongoose.disconnect();
-    console.log(review);
-    console.log(update);
-    
+    //console.log(review);
+    //console.log(update);
+
     res.json(update.reviews.at(-1))
 })
 
-app.patch('/api/book/:id', async (req, res) => {
+app.delete('/api/books/:id/reviews', async (req, res) => {
+    const idToFind = req.body
+    const deleted = await Book.findOneAndUpdate({ "reviews._id":idToFind});
+    //const kacs= await deleted.json()
+    console.log(idToFind);
+    console.log(deleted);
+    res.sendStatus(200)
+})
+
+app.patch('/api/books/:id', async (req, res) => {
 
 })
 
@@ -49,16 +58,16 @@ app.get('/api/books/all', async (req, res) => {
     const bookList = await Book.find({})
     res.json(bookList);
     //await mongoose.disconnect();
-/*
-    try {
-        const bookList = await Book.find({})
-        res.json(bookList);
-        //res.sendStatus(200)
-    } catch (error) {
-        res.send(error);
-        res.sendStatus(500);
-    }
-*/
+    /*
+        try {
+            const bookList = await Book.find({})
+            res.json(bookList);
+            //res.sendStatus(200)
+        } catch (error) {
+            res.send(error);
+            res.sendStatus(500);
+        }
+    */
 })
 
 
@@ -81,27 +90,26 @@ app.put("/api/updateUserBook", async (req, res) => {
         //await connectMongoose();
         const userBook = await UserBook.findOneAndUpdate(
             { BookId: bookId }, { IsRead: isRead },
-            );
+        );
         //await mongoose.disconnect();
-            res.json(userBook);
-        } catch (error) {
-            console.error("Error updating user book:", error);
-            res.status(500).json({ error: "Error updating user book" });
-        }
-    });
-    
-    app.get("/api/users/:name", async (req, res)=> {
-        const userName = req.params.name;
-        //await connectMongoose();
-        const user =  await User.findOne({name: userName})
-            .populate("usersBooks.book")
-            .exec();
-        //mongoose.disconnect;    
-        res.status(200).send(userName);
-    })
-    
-    
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
-    })
-    
+        res.json(userBook);
+    } catch (error) {
+        console.error("Error updating user book:", error);
+        res.status(500).json({ error: "Error updating user book" });
+    }
+});
+
+app.get("/api/users/:name", async (req, res) => {
+    const userName = req.params.name;
+    //await connectMongoose();
+    const user = await User.findOne({ name: userName })
+        .populate("usersBooks.book")
+        .exec();
+    //mongoose.disconnect;    
+    res.status(200).send(userName);
+})
+
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+})
