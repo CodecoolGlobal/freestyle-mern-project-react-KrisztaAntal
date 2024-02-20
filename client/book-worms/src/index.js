@@ -1,15 +1,25 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import UserPage from "./components/UserPage";
-
+import App from "./App"
+import Library from "./Pages/Library";
 
 const router = createBrowserRouter([
     {
-        path: "/collection",
-        element: <UserPage />,
-    },
+        path: "/",
+        element: <App/>,
+        children: [
+            {
+                path: "/",
+                element: <Library/>
+            },
+            {
+                path: "/collection",
+                element: <h1>its working</h1>,
+            }
+        ]
+    }
+
 ])
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import missingBook from '../assets/missing-book-image.jpg'
 
-function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
+function Book({ book, bookItemtype, isLoggedIn, isAdmin = false, onShowDetails }) {
 
-    const [collectedBooks, setCollectedBooks] = useState(null)
+    /*const [collectedBooks, setCollectedBooks] = useState(null)
 
     const handleAddToCollection = async (book, userId) => {
         const body = {
@@ -50,7 +50,7 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
             )}
             <p>{book.title}</p>
             <p>Written by: {book.author}</p>
-            <p>{book.genre}</p>                   {/*Might need to change to .map, in case it becomaes an array*/}
+            <p>{book.genre}</p>
             {bookItemtype === "library" ? (
                 <> {isLoggedIn ? <>
                     <button onClick={() => handleAddToCollection(book)}>Add to collection</button>                    <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
@@ -74,7 +74,7 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
                 )
             }
         </div>
-    )
+    )*/
 }
 
 export default Book;

@@ -1,36 +1,20 @@
 
 import { useState } from 'react'
-import ItemList from './components/ItemList.jsx'
+import ItemList from './components/BookList.jsx'
 import './App.css'
 import DetailedBook from './components/DetailedBook'
-import { Link } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
+
 
 
 function App() {
 
-  const [siteType, setSiteType] = useState('library');
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
   const [chosenBook, setChosenBook] = useState(null);
   const [user, setUser] = useState('Stranger')
 
 
-  function handleShowDetails(book) {
-    setShowDetails(true);
-    setChosenBook(book);
-  }
-
-  function handleBack() {
-    setShowDetails(false);
-  }
-
-  async function fetchAllBooks() {
-    const response = await fetch("/api/books/all");
-    const data = await response.json();
-    console.log(data);
-    return data;
-  }
 
   return (
     <>
@@ -39,14 +23,17 @@ function App() {
           <div className='header-title'>The Cult of Stories</div>
           <button className='header-item'>Library</button>
           <button className='header-item'>Collection</button>
-          {/* <Link to={"/collection"}> */}
-          <button className='header-item'>Collection</button>
-          {/* </Link> */}
+          {/*<Link to={"/collection"}>
+            <button className='header-item'>Collection</button>
+          </Link>*/}
           {isLoggedIn ? <p>Hello, {user}!</p> :
             <button className='header-item'>Log In</button>}
         </header>
+        <Outlet />
+
+
         <>
-          {showDetails ?
+          {/*showDetails ?
             <DetailedBook
               book={chosenBook}
               isAdmin={isAdmin}
@@ -98,11 +85,11 @@ function App() {
             ) : (
               <><div style={{ 'text-align': 'center' }}><h1>Something went wrong! Please refresh the site</h1></div></>
             )
-          }
+            */}
         </>
       </div>
     </>
   )
 }
 
-export default App
+export default App;
