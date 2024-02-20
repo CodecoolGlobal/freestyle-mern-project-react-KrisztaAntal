@@ -5,14 +5,20 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
 
     const [collectedBooks, setCollectedBooks] = useState(null)
 
-    const handleAddToCollection = async (book) => {
+    const handleAddToCollection = async (book, userId) => {
+        const body = {
+            book: book._id,
+            isRead: false,
+            isFavorite: false,
+            currentPageCount: 0
+        }
         try {
-            const response = await fetch('/api/addToCollection', {
-                method: 'POST',
+            const response = await fetch(`/api/users/${userId}/addToCollection`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(book)
+                body: JSON.stringify(body)
             });
             setCollectedBooks(response)
             console.log(response)
@@ -21,13 +27,13 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
         }
     };
 
-    const handleRemoveFromCollection = async (id) => {
+    const handleRemoveFromCollection = async (bookId, userId) => {
         try {
-            await fetch(`/api/removeFromCollection/${id}`, {
-                method: "DELETE"
+            await fetch(`/api/users/${userId}/removeFromCollection/${bookId}`, {
+                method: "PATCH"
             })
             setCollectedBooks((collectedBooks) => {
-                return collectedBooks.filter((collectedBook) => collectedBook._id !== id)
+                return collectedBooks.filter((collectedBook) => collectedBook._id !== bookId)
             })
         } catch (error) {
             return console.error(error)
@@ -47,7 +53,7 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
             <p>{book.genre}</p>                   {/*Might need to change to .map, in case it becomaes an array*/}
             {bookItemtype === "library" ? (
                 <> {isLoggedIn ? <>
-                    <button onClick={handleAddToCollection}>Add to collection</button>                    <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
+                    <button onClick={() => handleAddToCollection(book)}>Add to collection</button>                    <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
                 </>
                     :
                     <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
@@ -56,7 +62,7 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
             )
                 : bookItemtype === "collection" ? (
                     <>
-                        <button onClick={handleRemoveFromCollection}>Remove from collection</button>                        <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
+                        <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button> <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
                         <button>⭐</button>
                     </>
                 ) : (

@@ -27,6 +27,11 @@ app.get('/api/book/:id', async (req, res) => {
     res.send(book)
 });
 
+app.get('/api/employees/collected', async (req, res) => {
+    const collectedBooks = await UserBook.find()
+    res.json(collectedBooks)
+})
+
 app.post('/api/books/:id/review', async (req, res) => {
     const review = req.body
     //await connectMongoose();
@@ -62,10 +67,12 @@ app.get('/api/books/all', async (req, res) => {
 })
 
 
-app.post('/api/addToCollection', async (req, res) => {
+app.patch('/api/users/:userId/addToCollection', async (req, res) => {
+    const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/
     const book = req.body;
+    console.log(userId);
     try {
-        const collectedBook = await UserBook.create(book);
+        const collectedBook = await User.findOneAndUpdate({ _id: userId }, { $push: { usersBooks: book } }, { new: true });
         //await mongoose.disconnect();
         return res.json(collectedBook);
     } catch (error) {
@@ -73,6 +80,18 @@ app.post('/api/addToCollection', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.patch('/api/users/:userId/removeFromCollection/:bookId', async (req, res) => {
+    const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/
+    const bookId = req.params.bookId
+    try {
+        const updatedUser = await User.findOneAndUpdate({ _id: userId }, { $pull: { usersBooks: { "book._id": bookId } } }, { new: true });
+        //await mongoose.disconnect();
+        return res.json(updatedUser);
+    } catch (errror) {
+        return console.error(error)
+    }
+})
 
 app.delete('/api/removeFromCollection/:id', async (req, res) => {
     try {

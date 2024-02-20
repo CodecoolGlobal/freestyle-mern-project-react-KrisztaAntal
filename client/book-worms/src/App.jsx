@@ -9,12 +9,11 @@ import { Link } from "react-router-dom";
 function App() {
 
   const [siteType, setSiteType] = useState('library');
-  const [collectedBooks, setCollectedBooks] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [chosenBook, setChosenBook] = useState(null);
-  const [user, setUser] = useState('Eszter')
+  const [user, setUser] = useState('Stranger')
 
 
   function handleShowDetails(book) {
@@ -40,15 +39,19 @@ function App() {
           <div className='header-title'>The Cult of Stories</div>
           <button className='header-item'>Library</button>
           <button className='header-item'>Collection</button>
-          <Link to={"/collection"}>
-            <button className='header-item'>Collection</button>
-          </Link>
+          {/* <Link to={"/collection"}> */}
+          <button className='header-item'>Collection</button>
+          {/* </Link> */}
           {isLoggedIn ? <p>Hello, {user}!</p> :
             <button className='header-item'>Log In</button>}
         </header>
         <>
           {showDetails ?
-            <DetailedBook book={chosenBook} isAdmin={isAdmin} isLoggedIn={isLoggedIn} onBack={handleBack}></DetailedBook> :
+            <DetailedBook
+              book={chosenBook}
+              isAdmin={isAdmin}
+              isLoggedIn={isLoggedIn}
+              onBack={handleBack} /> :
 
             siteType === 'library' ? (
               <>

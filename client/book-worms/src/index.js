@@ -7,7 +7,7 @@ import UserPage from "./components/UserPage";
 
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: "/collection",
         element: <UserPage />,
     },
 ])
