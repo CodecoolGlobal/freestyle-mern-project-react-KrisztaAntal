@@ -43,7 +43,16 @@ app.post('/api/books/:id/review', async (req, res) => {
     res.json(update.reviews.at(-1))
 })
 
-app.patch('/api/book/:id', async (req, res) => {
+app.delete('/api/books/:id/reviews', async (req, res) => {
+    const idToFind = req.body
+    const deleted = await Book.findOneAndUpdate({ "reviews._id":idToFind});
+    //const kacs= await deleted.json()
+    console.log(idToFind);
+    console.log(deleted);
+    res.sendStatus(200)
+})
+
+app.patch('/api/books/:id', async (req, res) => {
 
 })
 
