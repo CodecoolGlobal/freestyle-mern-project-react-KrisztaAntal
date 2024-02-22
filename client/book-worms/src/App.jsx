@@ -3,7 +3,7 @@ import { useState } from 'react'
 import DetailedBook from './components/DetailedBook'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 //import Library from "./Pages/Library.jsx"
-import LibraryPage from './LibraryPage.jsx';
+import LibraryPage from './Pages/LibraryPage.jsx';
 import './App.css'
 
 function App() {

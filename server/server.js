@@ -18,11 +18,14 @@ connectMongoose();
 
 app.use(express.json());
 
-app.get('/api/books/all?filter=:filterValue', async (req, res)=>{
-    const filterValue = req.query.filterValue;
-    console.log('kacsa');
-    console.log(filterValue);
-    const filteredList = await Book.find()
+app.get('/api/books/all/filter/:filterBy/:filter', async (req, res)=>{
+    const filterBy = req.params.filterBy;
+    const filter = new RegExp(`${req.params.filter}`, 'i');
+    console.log(filterBy);
+    console.log({[filterBy]:filter});
+    const filteredList = await Book.find({[filterBy]:filter});
+    console.log(filteredList);
+    res.json(filteredList);
 })
 
 app.get('/api/book/:id', async (req, res) => {
@@ -60,13 +63,12 @@ app.delete('/api/books/:id/reviews', async (req, res) => {
     res.sendStatus(200)
 })
 
-app.patch('/api/books/:id', async (req, res) => {
+/* app.patch('/api/books/:id', async (req, res) => {
 
-})
+}) */
 
 
 app.get('/api/books/all', async (req, res) => {
-    //await connectMongoose();
     const bookList = await Book.find({})
     res.json(bookList);
     //await mongoose.disconnect();
