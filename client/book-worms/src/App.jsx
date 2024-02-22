@@ -40,7 +40,7 @@ function App() {
           </Link>
           {user ? (
             <div>
-              <p>Hello, {userName}!</p>
+              <>Hello, {userName}!</>
               <button
                 type='button'
                 onClick={() => setUser('')}
@@ -61,7 +61,7 @@ function App() {
         </header>
         <Routes>
           <Route path="/" element={<LibraryPage user={user} isAdmin={isAdmin} />} />
-          <Route path="/collection" element={<Collection pageType="library" user={user} isAdmin={isAdmin} />} />
+          <Route path="/collection" element={<Collection pageType="collection" user={user} isAdmin={isAdmin} />} />
           <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin} />} />
         </Routes>
       </div>

@@ -18,14 +18,24 @@ connectMongoose();
 
 app.use(express.json());
 
-app.get('/api/books/all/filter/:filterBy/:filter', async (req, res)=>{
+app.get('/api/books/all/filter/:filterBy/:filter', async (req, res) => {
     const filterBy = req.params.filterBy;
     const filter = new RegExp(`${req.params.filter}`, 'i');
     console.log(filterBy);
-    console.log({[filterBy]:filter});
-    const filteredList = await Book.find({[filterBy]:filter});
+    console.log({ [filterBy]: filter });
+    const filteredList = await Book.find({ [filterBy]: filter });
     console.log(filteredList);
     res.json(filteredList);
+})
+
+app.get('/api/books/all/filter', async (req, res) => {
+    const { title, author, genre, year } = req.query
+    const books = await Book
+        .find({ title: new RegExp(title, "i") })
+        .find({ author: new RegExp(author, "i") })
+        .find({ genre: new RegExp(genre, "i") })
+        .find({ year: new RegExp(year, "i") })
+    res.json(books)
 })
 
 app.get('/api/book/:id', async (req, res) => {
