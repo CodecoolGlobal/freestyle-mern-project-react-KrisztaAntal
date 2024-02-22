@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import missingBook from '../assets/missing-book-image.jpg'
+import { useNavigate } from 'react-router-dom';
 
-function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
+function Book({pageType, isLoggedIn, key, book}) {
+
+
+    const navigate = useNavigate();
 
     const [collectedBooks, setCollectedBooks] = useState(null)
 
@@ -42,7 +46,7 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
 
 
     return (
-        <div className="list-item-root">
+        <div className="list-item-root" key={key}>
             {book.bookImage !== null ? (
                 <img src={book.bookImage} alt="Book Index Image" />
             ) : (
@@ -50,19 +54,22 @@ function Book({ book, bookItemtype, isLoggedIn, isAdmin, onShowDetails }) {
             )}
             <p>{book.title}</p>
             <p>Written by: {book.author}</p>
-            <p>{book.genre}</p>                   {/*Might need to change to .map, in case it becomaes an array*/}
-            {bookItemtype === "library" ? (
-                <> {isLoggedIn ? <>
-                    <button onClick={() => handleAddToCollection(book)}>Add to collection</button>                    <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
+            <p>{book.genre}</p>
+            {pageType === "library" ? (
+                <> {isLoggedIn ? <> {collectedBooks ? (
+                    <button onClick={() => handleAddToCollection(book)}>Add to collection</button>
+                ) : (<button onClick={() => handleRemoveFromCollection(book)}>Remove from collection</button>)}
+                    <button onClick={() => { navigate(`/book/details/${book.bookId}`); console.log(book) }}>Show details</button>
                 </>
                     :
-                    <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
+                    <button onClick={() => { navigate(`/book/details/${book._id}`); console.log(book) }}>Show details</button>
                 }
                 </>
             )
-                : bookItemtype === "collection" ? (
+                : pageType === "collection" ? (
                     <>
-                        <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button> <button onClick={() => { onShowDetails(book); console.log(book) }}>Show details</button>
+                        <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button> 
+                        <button onClick={() => { navigate(`/book/details/${book.bookId}`); console.log(book) }}>Show details</button>
                         <button>⭐</button>
                     </>
                 ) : (

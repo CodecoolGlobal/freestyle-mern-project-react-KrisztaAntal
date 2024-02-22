@@ -1,108 +1,43 @@
 
 import { useState } from 'react'
-import ItemList from './components/ItemList.jsx'
-import './App.css'
 import DetailedBook from './components/DetailedBook'
-import { Link } from "react-router-dom";
-
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Library from "./Pages/Library.jsx"
+import './App.css'
 
 function App() {
 
-  const [siteType, setSiteType] = useState('library');
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-  const [chosenBook, setChosenBook] = useState(null);
-  const [user, setUser] = useState('Stranger')
-
-
-  function handleShowDetails(book) {
-    setShowDetails(true);
-    setChosenBook(book);
-  }
-
-  function handleBack() {
-    setShowDetails(false);
-  }
-
-  async function fetchAllBooks() {
-    const response = await fetch("/api/books/all");
-    const data = await response.json();
-    console.log(data);
-    return data;
-  }
+  const [isAdmin] = useState(false);
+  const [user] = useState('Stranger')
 
   return (
-    <>
+    <Router>
       <div className="parent">
         <header className="header">
-          <div className='header-title'>The Cult of Stories</div>
-          <button className='header-item'>Library</button>
-          <button className='header-item'>Collection</button>
-          {/* <Link to={"/collection"}> */}
-          <button className='header-item'>Collection</button>
-          {/* </Link> */}
-          {isLoggedIn ? <p>Hello, {user}!</p> :
+          <Link to={"/"}>
+            <div className='header-title'>The Cult of Stories</div>
+          </Link>
+          <Link to={"/"}>
+            <button className='header-item'>Library</button>
+          </Link>
+          <Link to={"/collection"}>
+            <button className='header-item'>Collection</button>
+          </Link>
+          {user ? <p>Hello, {user}!</p> :
             <button className='header-item'>Log In</button>}
         </header>
-        <>
-          {showDetails ?
-            <DetailedBook
-              book={chosenBook}
-              isAdmin={isAdmin}
-              isLoggedIn={isLoggedIn}
-              onBack={handleBack} /> :
 
-            siteType === 'library' ? (
-              <>
-                <div className='menu-bar'>
-                  <h3>Filters</h3>
-                </div>
-                <div className="content">
-                  <ItemList
-                    fetchList={fetchAllBooks}
-                    bookItemtype={siteType}
-                    onShowDetails={handleShowDetails}
-                    isLoggedIn={isLoggedIn}
-                    isAdmin={isAdmin} />
-                </div>
-              </>
 
-            ) : siteType === 'collection' ? (
-              <>
-                <div className='menu-bar'>
-                  <h3>Filters</h3>
-                </div>
-                <div className="content">
-                  <ItemList
-                    onBack={handleBack}
-                    onShowDetails={handleShowDetails}
-                    isLoggedIn={isLoggedIn}
-                    isAdmin={isAdmin} />
-                </div>
-              </>
-
-            ) : siteType === 'admin' ? (
-              <>
-                <div className='menu-bar'>
-                  <h3>Filters</h3>
-                </div>
-                <div className="content">
-                  <ItemList
-                    onBack={handleBack}
-                    onShowDetails={handleShowDetails}
-                    isLoggedIn={isLoggedIn}
-                    isAdmin={isAdmin} />
-                </div>
-              </>
-            ) : (
-              <><div style={{ 'text-align': 'center' }}><h1>Something went wrong! Please refresh the site</h1></div></>
-            )
-          }
-        </>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Library pageType="library" user={user} isAdmin={isAdmin}/>} />
+            <Route path="/collection" element={<h1>Its working</h1>} />
+            <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin}/>} />
+          </Routes>
+        </div>
       </div>
-    </>
+    </Router>
   )
 }
 
-export default App
+export default App;

@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import EditDetailedBook from "./EditDetailedBook";
+import { useNavigate, useParams } from "react-router-dom";
 
-function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
-    const [bookInfo, setBookInfo] = useState(book);
+function DetailedBook({ isAdmin, user }) {
+    const [bookInfo, setBookInfo] = useState(null);
     const [isAddReviewPushed, setIsAddReviewPushed] = useState(false);
     const [reviewText, setReviewText] = useState('');
     const [rate, setRate] = useState(0);
     const [averageRate, setAverageRate] = useState(null);
     const [missingRate, setMissingRate] = useState(false)
-    const bookId = book.bookId
+
+
+    const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(true)
+
+    const { id } = useParams();
 
     async function addReview(bookId, review) {
         if (review.rate > 0) {
@@ -18,6 +25,7 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(review)
             })
+            console.log(response);
             setIsAddReviewPushed(false);
             setReviewText('')
         } else { setMissingRate(true) }
@@ -25,34 +33,41 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
 
     async function handleAddReview(e) {
         e.preventDefault();
-        await addReview(bookId, { reviewText, rate })
+        await addReview(bookInfo.bookId, { reviewText, rate })
         await fetchBookInfo();
 
     }
 
-    function getAverageRate() {
-        const average = Math.round(bookInfo.reviews.reduce((rateSum, review) => isNaN(review.rate) ? rateSum : rateSum + review.rate, 0) / bookInfo.reviews.length);
+    function getAverageRate(reviews) {
+        console.log(reviews);
+        const average = Math.round(reviews.reduce((rateSum, review) => isNaN(review.rate) ? rateSum : rateSum + review.rate, 0) / reviews.length);
         setAverageRate(average)
     }
 
 
     useEffect(() => {
-        getAverageRate()
-        fetchBookInfo();
-    }, [getAverageRate])
+        fetchBookInfo()
+            .then((book) => {
+                setBookInfo(book)
+                getAverageRate(book.reviews)
+                setLoading(false)
+            })
+    }, [])
 
     async function fetchBookInfo() {
-        const res = await fetch(`/api/book/${bookId}`);
-        const bookDetails = await res.json();
-        setBookInfo(bookDetails)
+        const res = await fetch(`/api/book/${id}`);
+        return await res.json();
+        
     }
 
+    if (loading) {
+        return "Loading..."
+    }
 
-    return ((book &&
+    return ((bookInfo &&
         (isAdmin
-            ? <EditDetailedBook onBack={onBack} bookinfo={book}></EditDetailedBook>
+            ? <EditDetailedBook onBack={navigate(-1)} bookinfo={bookInfo}></EditDetailedBook>
             : <>
-
                 <div>
                     <img src={bookInfo.bookImage}></img>
                     <h2 className="bookDetailTitle">{bookInfo.title}</h2>
@@ -68,7 +83,7 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
 
                 </div>
                 <div>
-                    {isLoggedIn
+                    {user
                         ? <>
                             {isAddReviewPushed ? <form onSubmit={handleAddReview}>
                                 <label><input type="radio" name="rate" value={1} onChange={(e) => setRate(e.target.value)}></input>1</label>
@@ -79,8 +94,8 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
                                 <br></br>
                                 <input value={reviewText} onChange={(e) => setReviewText(e.target.value)} type="text"></input>
                                 <button type="submit" >Add Review</button>
-                            </form>:
-                            <button onClick={() => setIsAddReviewPushed(true)}>Add a review</button>
+                            </form> :
+                                <button onClick={() => setIsAddReviewPushed(true)}>Add a review</button>
                             }
                             {missingRate && <p>Please Rate!</p>}
                         </>
@@ -93,7 +108,7 @@ function DetailedBook({ book, isAdmin, isLoggedIn, onBack }) {
                     </div>
                 </div>
                 <div>
-                    <button onClick={() => { onBack() }}>Back</button>
+                    <button onClick={() => { navigate(-1) }}>Back</button>
                 </div>
             </>
         ))
