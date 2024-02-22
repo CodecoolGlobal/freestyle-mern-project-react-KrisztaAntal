@@ -10,8 +10,10 @@ async function fetchAllBooks() {
     return data;
 }
 
-function Library() {
+function Library({pageType, user, isAdmin}) {
 
+    console.log("pageType: "+pageType);
+    
     const [loading, setLoading] = useState(true);
     const [books, setBooks] = useState(null);
 
@@ -29,17 +31,13 @@ function Library() {
     return (
         <div className="content">
             <BookList
+                pageType={pageType}
+                user={user}
+                isAdmin={isAdmin}
                 books={books}
             />
         </div>
     )
 }
-
-/*            <BookList
-                fetchList={fetchAllBooks}
-                bookItemtype={siteType}
-                onShowDetails={handleShowDetails}
-                isLoggedIn={isLoggedIn}
-                isAdmin={isAdmin} /> */
 
 export default Library
