@@ -5,11 +5,25 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 //import Library from "./Pages/Library.jsx"
 import LibraryPage from './Pages/LibraryPage.jsx';
 import './App.css'
+import Collection from "./Pages/Collection.jsx"
+
+const fetchUsers = (name) => {
+  return fetch(`/api/users/${name}`).then((res) => res.json())
+}
 
 function App() {
-
   const [isAdmin] = useState(false);
-  const [user] = useState('Stranger')
+  const [user, setUser] = useState(null)
+  const [userName, setUserName] = useState("")
+
+  const handleLogIn = (name) => {
+    fetchUsers(name)
+      .then((user) => {
+        setUser(user)
+        setUserName(name)
+        console.log(user._id)
+      })
+  }
 
   return (
     <Router>
@@ -24,14 +38,32 @@ function App() {
           <Link to={"/collection"}>
             <button className='header-item'>Collection</button>
           </Link>
-          {user ? <p>Hello, {user}!</p> :
-            <button className='header-item'>Log In</button>}
+          {user ? (
+            <div>
+              <p>Hello, {userName}!</p>
+              <button
+                type='button'
+                onClick={() => setUser('')}
+              >Log Off</button>
+            </div>) : (
+            <div>
+              <input
+                type='text'
+                placeholder='input your username'
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)} />
+              <button
+                className='header-item'
+                onClick={() => handleLogIn(userName)}
+              >Log In</button>
+            </div>
+          )}
         </header>
-          <Routes>
-            <Route path="/" element={<LibraryPage user={user} isAdmin={isAdmin}/>} />
-            <Route path="/collection" element={<h1>Its working</h1>} />
-            <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin}/>} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<LibraryPage user={user} isAdmin={isAdmin} />} />
+          <Route path="/collection" element={<Collection pageType="library" user={user} isAdmin={isAdmin} />} />
+          <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin} />} />
+        </Routes>
       </div>
     </Router>
   )

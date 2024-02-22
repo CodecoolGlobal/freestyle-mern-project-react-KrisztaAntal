@@ -48,9 +48,32 @@ app.get('/api/book/:id', async (req, res) => {
     res.send(book)
 });
 
-app.get('/api/employees/collected', async (req, res) => {
-    const collectedBooks = await UserBook.find()
-    res.json(collectedBooks)
+app.get('/api/users/:userId/collected', async (req, res) => {
+    const userId = req.params.userId
+    const user = await User.findById(userId).populate("usersBooks.book")
+    const collectedBooks = user.usersBooks.map(item => {
+        if (item.book) {
+            return {
+                ...item.book.toObject(), // Convert Mongoose document to plain JavaScript object
+                isRead: item.isRead,
+                isFavorite: item.isFavorite,
+                currentPageCount: item.currentPageCount,
+                _id: item._id
+            };
+        } else {
+            // Handle the case where item.book is undefined
+            return null; // or any other appropriate action
+        }
+    }).filter(Boolean); // Filter out any null entries
+    return res.json(collectedBooks);
+});
+
+
+
+app.get('/api/users/:name', async (req, res) => {
+    const name = req.params.name
+    const user = await User.findOne({ name: name })
+    return res.json(user)
 })
 
 app.post('/api/books/:id/review', async (req, res) => {
@@ -97,13 +120,21 @@ app.get('/api/books/all', async (req, res) => {
 
 
 app.patch('/api/users/:userId/addToCollection', async (req, res) => {
-    const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/
+    const userId = req.params.userId
     const book = req.body;
-    console.log(userId);
+
     try {
-        const collectedBook = await User.findOneAndUpdate({ _id: userId }, { $push: { usersBooks: book } }, { new: true });
-        //await mongoose.disconnect();
+        const collectedBook = await User.findOneAndUpdate(
+            { _id: userId },
+            { $push: { usersBooks: book } },
+            { new: true }
+        );
+
+        if (!collectedBook) {
+            return res.status(404).json({ error: 'User not found' });
+        }
         return res.json(collectedBook);
+
     } catch (error) {
         console.error('Error adding book to collection:', error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -111,16 +142,24 @@ app.patch('/api/users/:userId/addToCollection', async (req, res) => {
 });
 
 app.patch('/api/users/:userId/removeFromCollection/:bookId', async (req, res) => {
-    const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/
+    const userId = req.params.userId
     const bookId = req.params.bookId
     try {
-        const updatedUser = await User.findOneAndUpdate({ _id: userId }, { $pull: { usersBooks: { "book._id": bookId } } }, { new: true });
-        //await mongoose.disconnect();
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId },
+            { $pull: { usersBooks: { _id: bookId } } },
+            { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
         return res.json(updatedUser);
-    } catch (errror) {
-        return console.error(error)
+
+    } catch (error) {
+        console.error('Error removing book from collection:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
-})
+});
 
 app.delete('/api/removeFromCollection/:id', async (req, res) => {
     try {
@@ -128,16 +167,18 @@ app.delete('/api/removeFromCollection/:id', async (req, res) => {
         const deleted = await book.delete()
         return res.json(deleted)
     } catch (err) {
-        return console.error(error)
+        return console.error(err)
     }
 })
 
-app.put("/api/updateUserBook", async (req, res) => {
+app.patch("/api/updateUserBook/:userId", async (req, res) => {
+    const userId = req.params.userId
     try {
-        const { isRead, bookId } = req.body;
         //await connectMongoose();
         const userBook = await UserBook.findOneAndUpdate(
-            { BookId: bookId }, { IsRead: isRead },
+            { _id: userId },
+            { $set: { ...req.body } },
+            { new: true }
         );
         //await mongoose.disconnect();
         res.json(userBook);
@@ -154,7 +195,7 @@ app.get("/api/users/:name", async (req, res) => {
         .populate("usersBooks.book")
         .exec();
     //mongoose.disconnect;    
-    res.status(200).send(userName);
+    res.status(200).send(user);
 })
 
 
