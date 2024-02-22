@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import Filter from "./components/Filter"
-import ItemList from "./components/ItemList"
+import BookList from "./components/BookList"
 
 
 
-function LibraryPage() {
+function Library({ user, isAdmin }) {
     const [filterValue, setFilterValue] = useState('');
     const [filteredList, setFilteredList] = useState('');
     const [list, setList] = useState('');
@@ -33,13 +33,20 @@ function LibraryPage() {
 
     return (
         <>
-            <Filter onFilter={handleFilter} />
-            {filterValue ?
-                <ItemList list={filteredList} />
+            <div className="menu-bar">
+                {console.log('kacsa')}
+                <Filter onFilter={handleFilter} />
+            </div>
+            {/* {filterValue ? <div className="content">
+                <BookList list={filteredList} />
+            </div>
                 :
-                <ItemList list={list} />}
+                <div className="content">
+                    <BookList list={list} />
+                </div>
+            } */}
 
         </>
     )
 }
-export default LibraryPage
+export default Library

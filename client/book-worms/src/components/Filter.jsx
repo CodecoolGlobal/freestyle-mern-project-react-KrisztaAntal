@@ -50,9 +50,6 @@ function Filter({onFilter}) {
                 <button onClick={()=>handleSearch(length)}>Search</button>
                 <br />
             </div>
-            <>
-            <ItemList ></ItemList>
-            </>
         </>
     )
 }

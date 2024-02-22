@@ -23,7 +23,8 @@ app.get('/api/book/:id', async (req, res) => {
     //await connectMongoose();
     const book = await Book.findOne({ bookId: idToFind })
     //await mongoose.disconnect();
-    //console.log(book);
+    console.log(idToFind);
+    console.log(book);
     res.send(book)
 });
 
