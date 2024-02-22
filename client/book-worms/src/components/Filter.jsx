@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ItemList from "./ItemList";
+//import ItemList from "./ItemList";
 
 function Filter({onFilter}) {
     const [title, setTitle] = useState('');
@@ -10,10 +10,10 @@ function Filter({onFilter}) {
 
     async function handleSearch(filterValue) {
         onFilter(filterValue);
-        setTitle('');
+        /* setTitle('');
         setAuthor('');
         setGenre('');
-        setLength('');
+        setLength(''); */
     }
 
 

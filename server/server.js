@@ -18,6 +18,13 @@ connectMongoose();
 
 app.use(express.json());
 
+app.get('/api/books/all?filter=:filterValue', async (req, res)=>{
+    const filterValue = req.query.filterValue;
+    console.log('kacsa');
+    console.log(filterValue);
+    const filteredList = await Book.find()
+})
+
 app.get('/api/book/:id', async (req, res) => {
     const idToFind = req.params.id
     //await connectMongoose();
@@ -58,7 +65,6 @@ app.patch('/api/books/:id', async (req, res) => {
 })
 
 
-
 app.get('/api/books/all', async (req, res) => {
     //await connectMongoose();
     const bookList = await Book.find({})
@@ -76,11 +82,6 @@ app.get('/api/books/all', async (req, res) => {
     */
 })
 
-app.get('/api/books/all/?filter=:filterValue', async (req, res)=>{
-    const filterValue = req.query.filterValue;
-    console.log(filterValue);
-    const filteredList = await Book.find()
-})
 
 
 app.patch('/api/users/:userId/addToCollection', async (req, res) => {

@@ -2,7 +2,8 @@
 import { useState } from 'react'
 import DetailedBook from './components/DetailedBook'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import Library from "./Pages/Library.jsx"
+//import Library from "./Pages/Library.jsx"
+import LibraryPage from './LibraryPage.jsx';
 import './App.css'
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
 
         <div>
           <Routes>
-            <Route path="/" element={<Library user={user} isAdmin={isAdmin}/>} />
+            <Route path="/" element={<LibraryPage user={user} isAdmin={isAdmin}/>} />
             <Route path="/collection" element={<h1>Its working</h1>} />
             <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin}/>} />
           </Routes>
