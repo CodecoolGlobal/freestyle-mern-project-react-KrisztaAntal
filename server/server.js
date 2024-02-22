@@ -75,6 +75,12 @@ app.get('/api/books/all', async (req, res) => {
     */
 })
 
+app.get('/api/books/all/?filter=:filterValue', async (req, res)=>{
+    const filterValue = req.query.filterValue;
+    console.log(filterValue);
+    const filteredList = await Book.find()
+})
+
 
 app.patch('/api/users/:userId/addToCollection', async (req, res) => {
     const userId = "65c49e33e7dc9a98f9c1ac8a" /*req.params.userId*/

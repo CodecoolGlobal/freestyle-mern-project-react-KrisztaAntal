@@ -4,6 +4,7 @@ import ItemList from './components/ItemList.jsx'
 import './App.css'
 import DetailedBook from './components/DetailedBook'
 import { Link } from "react-router-dom";
+import Filter from './components/Filter.jsx';
 
 
 function App() {
@@ -56,7 +57,7 @@ function App() {
             siteType === 'library' ? (
               <>
                 <div className='menu-bar'>
-                  <h3>Filters</h3>
+                  <Filter />
                 </div>
                 <div className="content">
                   <ItemList
