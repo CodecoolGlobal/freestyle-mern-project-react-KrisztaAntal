@@ -1,10 +1,12 @@
 import Book from "./Book";
 
+
 function BookList({ pageType, user, isAdmin, books }) {
 
     //const [bookList] = useState(books)
 
-    console.log("listning books");
+
+    console.log("listing books");
     return (
         <div className="item-list-root">
             {
@@ -15,7 +17,7 @@ function BookList({ pageType, user, isAdmin, books }) {
                         key={book.bookId}
                         book={book}
                         isAdmin={isAdmin}
-
+                        user={user}
                     />
                 ))
             }
