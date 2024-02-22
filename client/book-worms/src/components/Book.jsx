@@ -2,19 +2,15 @@ import { useState } from 'react';
 import missingBook from '../assets/missing-book-image.jpg'
 import { useNavigate } from 'react-router-dom';
 
-function Book({pageType, isLoggedIn, key, book}) {
-
+function Book({ pageType, isLoggedIn, key, book, user }) {
 
     const navigate = useNavigate();
-
     const [collectedBooks, setCollectedBooks] = useState(null)
+    const userId = user ? user._id : null;
 
-    const handleAddToCollection = async (book, userId) => {
+    const handleAddToCollection = async () => {
         const body = {
             book: book._id,
-            isRead: false,
-            isFavorite: false,
-            currentPageCount: 0
         }
         try {
             const response = await fetch(`/api/users/${userId}/addToCollection`, {
@@ -24,21 +20,28 @@ function Book({pageType, isLoggedIn, key, book}) {
                 },
                 body: JSON.stringify(body)
             });
-            setCollectedBooks(response)
-            console.log(response)
+            if (response.ok) {
+                setCollectedBooks(prevState => prevState ? [...prevState, book] : [book]);
+                console.log('Book successfully added to collection')
+            } else {
+                console.error('Failed to add book to collection');
+            }
         } catch (error) {
             console.error('Error adding book to collection:', error);
         }
     };
 
-    const handleRemoveFromCollection = async (bookId, userId) => {
+    const handleRemoveFromCollection = async () => {
         try {
-            await fetch(`/api/users/${userId}/removeFromCollection/${bookId}`, {
+            const response = await fetch(`/api/users/${userId}/removeFromCollection/${book._id}`, {
                 method: "PATCH"
-            })
-            setCollectedBooks((collectedBooks) => {
-                return collectedBooks.filter((collectedBook) => collectedBook._id !== bookId)
-            })
+            });
+            if (response.ok) {
+                setCollectedBooks(prevState => prevState.filter(collectedBook => collectedBook._id !== book._id));
+                console.log('Book successfully removed to collection')
+            } else {
+                console.error('Failed to remove book from collection');
+            }
         } catch (error) {
             return console.error(error)
         }
@@ -56,9 +59,9 @@ function Book({pageType, isLoggedIn, key, book}) {
             <p>Written by: {book.author}</p>
             <p>{book.genre}</p>
             {pageType === "library" ? (
-                <> {isLoggedIn ? <> {collectedBooks ? (
-                    <button onClick={() => handleAddToCollection(book)}>Add to collection</button>
-                ) : (<button onClick={() => handleRemoveFromCollection(book)}>Remove from collection</button>)}
+                <> {isLoggedIn ? <> {!collectedBooks ? (
+                    <button onClick={handleAddToCollection}>Add to collection</button>
+                ) : (<button onClick={handleRemoveFromCollection}>Remove from collection</button>)}
                     <button onClick={() => { navigate(`/book/details/${book.bookId}`); console.log(book) }}>Show details</button>
                 </>
                     :
@@ -68,7 +71,7 @@ function Book({pageType, isLoggedIn, key, book}) {
             )
                 : pageType === "collection" ? (
                     <>
-                        <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button> 
+                        <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button>
                         <button onClick={() => { navigate(`/book/details/${book.bookId}`); console.log(book) }}>Show details</button>
                         <button>⭐</button>
                     </>
