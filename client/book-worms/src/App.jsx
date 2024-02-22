@@ -2,7 +2,8 @@
 import { useState } from 'react'
 import DetailedBook from './components/DetailedBook'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import Library from "./Pages/Library.jsx"
+//import Library from "./Pages/Library.jsx"
+import LibraryPage from './Pages/LibraryPage.jsx';
 import './App.css'
 import Collection from "./Pages/Collection.jsx"
 
@@ -58,15 +59,11 @@ function App() {
             </div>
           )}
         </header>
-
-
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Library pageType="library" user={user} isAdmin={isAdmin} />} />
-            <Route path="/collection" element={<Collection pageType="library" user={user} isAdmin={isAdmin} />} />
-            <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin} />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<LibraryPage user={user} isAdmin={isAdmin} />} />
+          <Route path="/collection" element={<Collection pageType="library" user={user} isAdmin={isAdmin} />} />
+          <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin} />} />
+        </Routes>
       </div>
     </Router>
   )
