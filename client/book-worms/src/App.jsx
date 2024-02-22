@@ -27,15 +27,11 @@ function App() {
           {user ? <p>Hello, {user}!</p> :
             <button className='header-item'>Log In</button>}
         </header>
-
-
-        <div>
           <Routes>
             <Route path="/" element={<LibraryPage user={user} isAdmin={isAdmin}/>} />
             <Route path="/collection" element={<h1>Its working</h1>} />
             <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin}/>} />
           </Routes>
-        </div>
       </div>
     </Router>
   )
