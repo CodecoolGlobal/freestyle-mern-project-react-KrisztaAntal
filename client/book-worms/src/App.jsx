@@ -1,35 +1,70 @@
+
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import DetailedBook from './components/DetailedBook'
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import LibraryPage from './Pages/LibraryPage.jsx';
 import './App.css'
+import Collection from "./Pages/Collection.jsx"
+
+const fetchUsers = (name) => {
+  return fetch(`/api/users/${name}`).then((res) => res.json())
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isAdmin] = useState(false);
+  const [user, setUser] = useState(null)
+  const [userName, setUserName] = useState("")
+
+  const handleLogIn = (name) => {
+    fetchUsers(name)
+      .then((user) => {
+        setUser(user)
+        setUserName(name)
+      })
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="parent">
+        <header className="header">
+          <Link to={"/"}>
+            <div className='header-title'>The Cult of Stories</div>
+          </Link>
+          <Link to={"/"}>
+            <button className='header-item'>Library</button>
+          </Link>
+          <Link to={"/collection"}>
+            <button className='header-item'>Collection</button>
+          </Link>
+          {user ? (
+            <div>
+              <>Hello, {userName}!</>
+              <button
+                type='button'
+                onClick={() => setUser('')}
+              >Log Off</button>
+            </div>) : (
+            <div>
+              <input
+                type='text'
+                placeholder='input your username'
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)} />
+              <button
+                className='header-item'
+                onClick={() => handleLogIn(userName)}
+              >Log In</button>
+            </div>
+          )}
+        </header>
+        <Routes>
+          <Route path="/" element={<LibraryPage user={user} isAdmin={isAdmin} />} />
+          <Route path="/collection" element={<Collection pageType="collection" user={user} isAdmin={isAdmin} />} />
+          <Route path="/book/details/:id" element={<DetailedBook user={user} isAdmin={isAdmin} />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Router>
   )
 }
 
-export default App
+export default App;
