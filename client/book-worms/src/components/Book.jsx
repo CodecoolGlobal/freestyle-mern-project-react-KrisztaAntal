@@ -7,6 +7,7 @@ function Book({ pageType, isLoggedIn, key, book, user }) {
     const navigate = useNavigate();
     const [collectedBooks, setCollectedBooks] = useState(null)
     const userId = user ? user._id : null;
+    const [currentPageCount, setCurrentPageCount] = useState(0);
 
     const handleAddToCollection = async () => {
         const body = {
@@ -48,6 +49,16 @@ function Book({ pageType, isLoggedIn, key, book, user }) {
     }
 
 
+
+    const handlePageChange = (event) => {
+        setCurrentPageCount(parseInt(event.target.value));
+    };
+
+    const calculateProgress = () => {
+        if (book.pageCount === 0) return 0;
+        return Math.round((currentPageCount / book.pageCount) * 100);
+    };
+
     return (
         <div className="list-item-root" key={key}>
             {book.bookImage !== null ? (
@@ -71,9 +82,25 @@ function Book({ pageType, isLoggedIn, key, book, user }) {
             )
                 : pageType === "collection" ? (
                     <>
-                        <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button>
+                        {/* <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button> */}
+                        <div>
+                            <label>
+                                Current Page:
+                                <input
+                                    type="number"
+                                    value={currentPageCount}
+                                    onChange={handlePageChange}
+                                />
+                            </label>
+                        </div>
+                        <div>
+                            <label>Total Pages: {book.pageCount}</label>
+                        </div>
+                        <div>
+                            <label>Reading Progress: {calculateProgress()}%</label>
+                        </div>
                         <button onClick={() => { navigate(`/book/details/${book.bookId}`); console.log(book) }}>Show details</button>
-                        <button>⭐</button>
+                        {/* <button>⭐</button> */}
                     </>
                 ) : (
                     <>

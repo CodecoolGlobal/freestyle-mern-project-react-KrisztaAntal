@@ -21,10 +21,7 @@ app.use(express.json());
 app.get('/api/books/all/filter/:filterBy/:filter', async (req, res) => {
     const filterBy = req.params.filterBy;
     const filter = new RegExp(`${req.params.filter}`, 'i');
-    console.log(filterBy);
-    console.log({ [filterBy]: filter });
     const filteredList = await Book.find({ [filterBy]: filter });
-    console.log(filteredList);
     res.json(filteredList);
 })
 
@@ -40,9 +37,7 @@ app.get('/api/books/all/filter', async (req, res) => {
 
 app.get('/api/book/:id', async (req, res) => {
     const idToFind = req.params.id
-    //await connectMongoose();
     const book = await Book.findOne({ bookId: idToFind })
-    //await mongoose.disconnect();
     console.log(idToFind);
     console.log(book);
     res.send(book)
@@ -54,17 +49,16 @@ app.get('/api/users/:userId/collected', async (req, res) => {
     const collectedBooks = user.usersBooks.map(item => {
         if (item.book) {
             return {
-                ...item.book.toObject(), // Convert Mongoose document to plain JavaScript object
+                ...item.book.toObject(),
                 isRead: item.isRead,
                 isFavorite: item.isFavorite,
                 currentPageCount: item.currentPageCount,
                 _id: item._id
             };
         } else {
-            // Handle the case where item.book is undefined
-            return null; // or any other appropriate action
+            return null;
         }
-    }).filter(Boolean); // Filter out any null entries
+    }).filter(Boolean);
     return res.json(collectedBooks);
 });
 
@@ -78,9 +72,7 @@ app.get('/api/users/:name', async (req, res) => {
 
 app.post('/api/books/:id/review', async (req, res) => {
     const review = req.body
-    //await connectMongoose();
     const update = await Book.findOneAndUpdate({ bookId: req.params.id }, { $push: { reviews: review } }, { new: true })
-    //await mongoose.disconnect();
     console.log(review);
     console.log(update);
 
@@ -90,31 +82,13 @@ app.post('/api/books/:id/review', async (req, res) => {
 app.delete('/api/books/:id/reviews', async (req, res) => {
     const idToFind = req.body
     const deleted = await Book.findOneAndUpdate({ "reviews._id": idToFind });
-    //const kacs= await deleted.json()
-    console.log(idToFind);
-    console.log(deleted);
     res.sendStatus(200)
 })
-
-/* app.patch('/api/books/:id', async (req, res) => {
-
-}) */
 
 
 app.get('/api/books/all', async (req, res) => {
     const bookList = await Book.find({})
     res.json(bookList);
-    //await mongoose.disconnect();
-    /*
-        try {
-            const bookList = await Book.find({})
-            res.json(bookList);
-            //res.sendStatus(200)
-        } catch (error) {
-            res.send(error);
-            res.sendStatus(500);
-        }
-    */
 })
 
 
@@ -174,13 +148,11 @@ app.delete('/api/removeFromCollection/:id', async (req, res) => {
 app.patch("/api/updateUserBook/:userId", async (req, res) => {
     const userId = req.params.userId
     try {
-        //await connectMongoose();
         const userBook = await UserBook.findOneAndUpdate(
             { _id: userId },
             { $set: { ...req.body } },
             { new: true }
         );
-        //await mongoose.disconnect();
         res.json(userBook);
     } catch (error) {
         console.error("Error updating user book:", error);
@@ -190,11 +162,9 @@ app.patch("/api/updateUserBook/:userId", async (req, res) => {
 
 app.get("/api/users/:name", async (req, res) => {
     const userName = req.params.name;
-    //await connectMongoose();
     const user = await User.findOne({ name: userName })
         .populate("usersBooks.book")
         .exec();
-    //mongoose.disconnect;    
     res.status(200).send(user);
 })
 

@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import DetailedBook from './components/DetailedBook'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-//import Library from "./Pages/Library.jsx"
 import LibraryPage from './Pages/LibraryPage.jsx';
 import './App.css'
 import Collection from "./Pages/Collection.jsx"
@@ -21,7 +20,6 @@ function App() {
       .then((user) => {
         setUser(user)
         setUserName(name)
-        console.log(user._id)
       })
   }
 
