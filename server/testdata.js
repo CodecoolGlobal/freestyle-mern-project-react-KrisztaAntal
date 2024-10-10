@@ -4,7 +4,7 @@ import Book from "./model/Book.js";
 import "dotenv/config";
 
 const userName = "admin"
-//createTestUser()
+createTestUser()
 getUserAndBooks()
 
 

@@ -3,7 +3,7 @@ import Book from "./model/Book.js"
 import mongoose from "mongoose";
 import "dotenv/config";
 
-//main()
+main()
 
 async function main() {
     await mongoose.connect(process.env.MONGO_DB_URL);

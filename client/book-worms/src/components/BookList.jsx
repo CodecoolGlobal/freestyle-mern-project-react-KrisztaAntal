@@ -10,7 +10,7 @@ function BookList({ pageType, user, isAdmin, books }) {
                         <Book
                             pageType={pageType}
                             isLoggedIn={user}
-                            key={book.bookId}
+                            IdKey={book.bookId}
                             book={book}
                             isAdmin={isAdmin}
                             user={user}
