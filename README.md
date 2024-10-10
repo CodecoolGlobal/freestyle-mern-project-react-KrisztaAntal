@@ -11,6 +11,29 @@
   <img src="https://github.com/user-attachments/assets/0afb1d50-d0a9-48a5-a643-2d385f464d45" alt="main-page" width="600px">
 </div>
 
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#built-with">Built With</a></li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#filter">Filter</a></li>
+        <li><a href="#details-page">Details page</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#collection">Collection</a></li>
+      </ul>
+    </li>
+  </ol>
+</details>
+
 ## Built with
 
 [![JavaScript]](#) [![React][React.js]][React-url] [![Vite]][Vite-url]  [![CSS]](#) [![Bootstrap]][Bootstrap-url] 
@@ -56,6 +79,34 @@
 Currently the site has a test user "admin" so to see the behaviour of the site with a logged in user please write admin in the login input.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Usage
+<div align="center"> 
+  <h3>Filter</h3>
+    <p>
+      The user can filter books by title, author, genre and publication year.
+      The filtering is case insensitive and the value put into the input field can be anywhere in the searched part, for exaxple writing "ill" into the title filter will show three books titled: Papillon, The Pillars of the Earth and Will You be There?
+    </p>
+    <img src="https://github.com/user-attachments/assets/79a4bc44-7633-4f78-a631-3275430d21d0" alt="filtering" width="600px">
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
+  <h3>Details page</h3>
+    <p>
+      Here the user can see the title, author, category, publishing year, number of pages and a summary of the book and the reviews given by other logged in users. 
+      Clicking on the Back button steps back to the Main library page
+    </p>
+    <img src="https://github.com/user-attachments/assets/ac3a4b22-2146-4d3c-9551-93cb62d33617" alt"details-page" width="600px">
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
+  <h3>Reviews</h3>
+    <p>
+      A logged in user can add a review with a short text and a rate from 1 to 5. Non registered users can only see them.
+    </p>
+    <img src="https://github.com/user-attachments/assets/8c8a25dc-dfdf-412f-96a1-c1a06813994c" alt="review" width="600px">
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
+  <h3>Collection</h3>
+    <p>A registered user can add books to their collection and can set their reading progress by writing which page they are on currently.</p>
+    <img src="https://github.com/user-attachments/assets/92748350-f90d-4e76-a04b-d548807d9b4c" alt="collection" width="600px">
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
+</div>
 
 
 [JavaScript]: https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000
