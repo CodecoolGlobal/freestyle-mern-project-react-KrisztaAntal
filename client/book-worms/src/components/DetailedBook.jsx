@@ -66,7 +66,7 @@ function DetailedBook({ isAdmin, user }) {
 
     return ((bookInfo &&
         (isAdmin
-            ? <EditDetailedBook onBack={navigate(-1)} bookinfo={bookInfo}></EditDetailedBook>
+            ? <><EditDetailedBook onBack={navigate(-1)} bookinfo={bookInfo}></EditDetailedBook></>
             : <>
                 <div>
                     <img src={bookInfo.bookImage}></img>

@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import missingBook from '../assets/missing-book-image.jpg'
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
-function Book({ pageType, isLoggedIn, key, book, user }) {
+function Book({pageType, isLoggedIn, key, book, user}) {
 
     const navigate = useNavigate();
     const [collectedBooks, setCollectedBooks] = useState(null)
@@ -49,7 +49,6 @@ function Book({ pageType, isLoggedIn, key, book, user }) {
     }
 
 
-
     const handlePageChange = (event) => {
         setCurrentPageCount(parseInt(event.target.value));
     };
@@ -62,24 +61,32 @@ function Book({ pageType, isLoggedIn, key, book, user }) {
     return (
         <div className="list-item-root" key={key}>
             {book.bookImage !== null ? (
-                <img src={book.bookImage} alt="Book Index Image" />
+                <img src={book.bookImage} alt="Book Index Image"/>
             ) : (
-                <img src={missingBook} alt="Book Index Image" />
+                <img src={missingBook} alt="Book Index Image"/>
             )}
             <p>{book.title}</p>
             <p>Written by: {book.author}</p>
             <p>{book.genre}</p>
             {pageType === "library" ? (
-                <> {isLoggedIn ? <> {!collectedBooks ? (
-                    <button onClick={handleAddToCollection}>Add to collection</button>
-                ) : (<button onClick={handleRemoveFromCollection}>Remove from collection</button>)}
-                    <button onClick={() => { navigate(`/book/details/${book.bookId}`); console.log(book) }}>Show details</button>
-                </>
-                    :
-                    <button onClick={() => { navigate(`/book/details/${book._id}`); console.log(book) }}>Show details</button>
-                }
-                </>
-            )
+                    <> {isLoggedIn ?
+                        <> {!collectedBooks ? (
+                            <button onClick={handleAddToCollection}>Add to collection</button>
+                        ) : (<button onClick={handleRemoveFromCollection}>Remove from collection</button>)}
+                            <button onClick={() => {
+                                navigate(`/book/details/${book.bookId}`);
+                                console.log(book)
+                            }}>Show details
+                            </button>
+                        </>
+                        :
+                        <button onClick={() => {
+                            navigate(`/book/details/${book.bookId}`);
+                            console.log(book)
+                        }}>Show details</button>
+                    }
+                    </>
+                )
                 : pageType === "collection" ? (
                     <>
                         {/* <button onClick={() => handleRemoveFromCollection(book._id)}>Remove from collection</button> */}
@@ -99,7 +106,11 @@ function Book({ pageType, isLoggedIn, key, book, user }) {
                         <div>
                             <label>Reading Progress: {calculateProgress()}%</label>
                         </div>
-                        <button onClick={() => { navigate(`/book/details/${book.bookId}`); console.log(book) }}>Show details</button>
+                        <button onClick={() => {
+                            navigate(`/book/details/${book.bookId}`);
+                            console.log(book)
+                        }}>Show details
+                        </button>
                         {/* <button>⭐</button> */}
                     </>
                 ) : (
