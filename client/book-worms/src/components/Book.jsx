@@ -2,7 +2,7 @@ import {useState} from 'react';
 import missingBook from '../assets/missing-book-image.jpg'
 import {useNavigate} from 'react-router-dom';
 
-function Book({pageType, isLoggedIn, key, book, user}) {
+function Book({pageType, isLoggedIn, IdKey, book, user}) {
 
     const navigate = useNavigate();
     const [collectedBooks, setCollectedBooks] = useState(null)
@@ -59,7 +59,7 @@ function Book({pageType, isLoggedIn, key, book, user}) {
     };
 
     return (
-        <div className="list-item-root" key={key}>
+        <div className="list-item-root" key={IdKey}>
             {book.bookImage !== null ? (
                 <img src={book.bookImage} alt="Book Index Image"/>
             ) : (
