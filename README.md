@@ -1,3 +1,5 @@
+<a id="readme-top"></a>
+
 <div align="center">
   <img src="https://github.com/user-attachments/assets/1dbf64f1-262b-48d0-931a-31aa42615c56" alt="Logo">
   <p>
@@ -17,6 +19,43 @@
 
 [![Git]][Git-url] [![Visual-Studio-Code]][Visual-Studio-Code-url] [![MongoDB]][MongoDB-url] [![Google]][Google-books-url] 
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Getting Started
+
+### Prerequisites
+
+* Register to MongoDB and create a free <a href="https://www.mongodb.com/resources/products/fundamentals/mongodb-cluster-setup">cluster</a>
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/CodecoolGlobal/freestyle-mern-project-react-KrisztaAntal.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Create environment variable: MONGO_DB_URL = "your-MongoDB-cluster-url"
+4. Open a terminal and step into the server directory in the project's directory
+5. Write command: ```node testdata.js```
+6. Write command: ```node migration.js```
+7. Write command: ```node server.js```
+8. Open a new terminal and step into the book-worms directory which is inside the client directory which is inside the project's directory
+9. Write command: ```npm run dev```
+
+
+Currently the site has a test user "admin" so to see the behaviour of the site with a logged in user please write admin in the login input.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 [JavaScript]: https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000
